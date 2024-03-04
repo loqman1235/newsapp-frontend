@@ -1,3 +1,4 @@
+import { shortenText } from "@/lib/utils";
 import { Link } from "react-router-dom";
 
 interface HeroSectionItemProps {
@@ -14,26 +15,31 @@ const HeroSectionItem = ({
   fontSize = "text-xl md:text-3xl",
 }: HeroSectionItemProps) => {
   return (
-    <Link to={`/news/${title}`} className="relative block w-full">
+    <Link
+      to={`/news/${title}`}
+      className="relative block h-full w-full overflow-hidden"
+    >
       {/* THUMBNAIL */}
-      <div>
+      <div className="h-full w-full">
         {/* IMAGE */}
-        <img src={image} alt={title} className="w-full object-cover" />
+        <img src={image} alt={title} className="h-full w-full object-cover" />
       </div>
 
-      <div className="absolute inset-0 flex items-end bg-gradient-to-b from-transparent to-black p-5  ">
+      <div className="absolute inset-0 flex items-end bg-black/50 p-5  transition-all duration-700 hover:bg-black/20">
         <div className="flex flex-col gap-2">
-          {/* TITLE */}
-          <h1 className={`font-mono font-bold text-white ${fontSize}`}>
-            {title}
-          </h1>
           {/* CATEGORY */}
           <Link
             to={`/cat/${title}`}
-            className="relative block pl-3 text-sm uppercase tracking-wide text-white before:absolute before:left-0 before:top-1/2 before:h-2/3 before:w-0.5 before:-translate-y-1/2 before:bg-red-500 before:content-[''] hover:underline"
+            className="block w-fit bg-black/70  px-2 py-px text-sm capitalize tracking-wide text-white"
           >
             {category}
           </Link>
+          {/* TITLE */}
+          <h1
+            className={`font-mono font-bold leading-tight text-white ${fontSize}`}
+          >
+            {shortenText(title, 40)}
+          </h1>
         </div>
       </div>
     </Link>

@@ -37,13 +37,4 @@ export const heroSectionNewsData = [
     image:
       "https://ichef.bbci.co.uk/news/976/cpsprodpb/122E0/production/_132746447_gettyimages-1299543321-1.jpg.webp",
   },
-  {
-    id: 5,
-    title: "Swiss ski resort Rüschegg Eywald falls victim to climate change",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates, ea. Perferendis corrupti reiciendis nesciunt rerum velit autem unde numquam nisi",
-    category: "climate",
-    image:
-      "https://ichef.bbci.co.uk/news/976/cpsprodpb/57A0/production/_132723422_whatsappimage2024-02-19at15.08.54.jpg.webp",
-  },
 ] as const;
