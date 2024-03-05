@@ -17,7 +17,7 @@ const HeroSectionItem = ({
   return (
     <Link
       to={`/news/${title}`}
-      className="relative block h-full w-full overflow-hidden"
+      className="relative block h-full w-full overflow-hidden rounded-xl"
     >
       {/* THUMBNAIL */}
       <div className="h-full w-full">
@@ -30,7 +30,7 @@ const HeroSectionItem = ({
           {/* CATEGORY */}
           <Link
             to={`/cat/${title}`}
-            className="block w-fit bg-black/70  px-2 py-px text-sm capitalize tracking-wide text-white"
+            className="block w-fit bg-red-600  px-2 py-px text-sm capitalize tracking-wide text-white"
           >
             {category}
           </Link>
