@@ -17,7 +17,7 @@ const HeroSectionItem = ({
   return (
     <Link
       to={`/news/${title}`}
-      className="relative block h-full w-full overflow-hidden rounded-xl"
+      className="relative block h-full w-full overflow-hidden"
     >
       {/* THUMBNAIL */}
       <div className="h-full w-full">
@@ -25,7 +25,7 @@ const HeroSectionItem = ({
         <img src={image} alt={title} className="h-full w-full object-cover" />
       </div>
 
-      <div className="absolute inset-0 flex items-end bg-black/50 p-5  transition-all duration-700 hover:bg-black/20">
+      <div className="absolute inset-0 flex items-end bg-black/50 p-2  transition-all duration-700 hover:bg-black/20">
         <div className="flex flex-col gap-2">
           {/* CATEGORY */}
           <Link

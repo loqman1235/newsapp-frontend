@@ -4,7 +4,7 @@ import Post from "./Post";
 
 const LatestPostsSection = () => {
   return (
-    <section className="mb-20">
+    <section className="mb-20 flex-[6]">
       <div className="flex items-center justify-between">
         <h2 className="mb-2 text-2xl font-bold tracking-tight">Latest News</h2>
         <Link
@@ -15,7 +15,12 @@ const LatestPostsSection = () => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
         <Post />
         <Post />
         <Post />
