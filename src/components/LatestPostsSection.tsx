@@ -3,13 +3,11 @@ import Section from "./Section";
 
 const LatestPostsSection = () => {
   return (
-    <div className="container my-20 max-w-6xl">
+    <div className="container max-w-6xl">
       <Section title="Latest News" href="/news">
         <Post mode="large" />
         <Post mode="large" />
         <Post mode="large" />
-        <Post mode="large" />
-        <Post mode="small" />
         <Post mode="small" />
         <Post mode="small" />
         <Post mode="small" />

@@ -8,8 +8,6 @@ const MustReadSection = () => {
         <Post mode="large" />
         <Post mode="large" />
         <Post mode="large" />
-        <Post mode="large" />
-        <Post mode="small" />
         <Post mode="small" />
         <Post mode="small" />
         <Post mode="small" />

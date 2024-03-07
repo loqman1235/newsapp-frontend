@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="container max-w-6xl">
         <div className="grid grid-cols-1 gap-10 py-10 md:grid-cols-5">
           {/* About */}
-          <div className="col-span-2">
+          <div className="md:col-span-2">
             <h1 className="mb-2 border-b border-muted-foreground/20 pb-2 font-mono text-xl font-bold">
               Voxium
             </h1>

@@ -20,7 +20,7 @@ const Section = ({ title, href, children }: SectionProps) => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
         {children}
       </div>
     </section>
