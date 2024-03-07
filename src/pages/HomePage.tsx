@@ -1,11 +1,13 @@
 import HeroSection from "@/components/HeroSection";
-import Main from "@/components/Main";
+import LatestPostsSection from "@/components/LatestPostsSection";
+import MustReadSection from "@/components/MustReadSection";
 
 const HomePage = () => {
   return (
     <>
       <HeroSection />
-      <Main />
+      <LatestPostsSection />
+      <MustReadSection />
     </>
   );
 };

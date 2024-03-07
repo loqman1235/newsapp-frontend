@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
 interface AppLayoutProps {
@@ -10,6 +11,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       <Header />
 
       {children}
+
+      <Footer />
     </div>
   );
 };

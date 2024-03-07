@@ -1,24 +1,20 @@
-import { FaArrowRightLong } from "react-icons/fa6";
-import { Link } from "react-router-dom";
 import Post from "./Post";
+import Section from "./Section";
 
 const MustReadSection = () => {
   return (
-    <section className="mb-20 overflow-hidden bg-red-400">
-      <div className="flex items-center justify-between">
-        <h2 className="mb-2 text-2xl font-bold tracking-tight">Must Read</h2>
-        <Link
-          to="/news"
-          className="flex items-center gap-2 font-medium text-red-600"
-        >
-          See All <FaArrowRightLong />
-        </Link>
-      </div>
-
-      <div className="grid grid-cols-1 gap-5 md:h-[400px] md:grid-cols-2 lg:grid-cols-2">
-        <Post />
-      </div>
-    </section>
+    <div className="container my-20 max-w-6xl">
+      <Section title="Must Read" href="/must-read">
+        <Post mode="large" />
+        <Post mode="large" />
+        <Post mode="large" />
+        <Post mode="large" />
+        <Post mode="small" />
+        <Post mode="small" />
+        <Post mode="small" />
+        <Post mode="small" />
+      </Section>
+    </div>
   );
 };
 
