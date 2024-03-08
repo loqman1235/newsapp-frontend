@@ -7,13 +7,13 @@ const HomePage = () => {
   return (
     <>
       <HeroSection />
-      <div className="container relative my-20 flex max-w-6xl gap-5">
+      <div className="relative my-20 flex max-w-6xl gap-5 !px-0 md:container">
         <div className="flex-[6]">
           <LatestPostsSection />
           <MustReadSection />
         </div>
         {/* Sticky Sidebar */}
-        <div className="min-h-[400px] flex-[2]">
+        <div className="hidden min-h-[400px] flex-[2] md:block">
           <SideBar />
         </div>
       </div>

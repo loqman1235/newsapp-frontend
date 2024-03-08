@@ -14,7 +14,7 @@ const Section = ({ title, href, children }: SectionProps) => {
         <h2 className="mb-2 text-2xl font-bold tracking-tight">{title}</h2>
         <Link
           to={href}
-          className="flex items-center gap-2 font-medium text-red-600"
+          className="flex items-center gap-2 font-medium text-muted-foreground"
         >
           See All <FaArrowRightLong />
         </Link>

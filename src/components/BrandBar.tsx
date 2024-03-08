@@ -7,7 +7,7 @@ const BrandBar = () => {
         {/* BRAND */}
         <Link
           to="/"
-          className="w-fit font-mono text-4xl font-black tracking-tight text-red-600"
+          className="w-fit font-mono text-4xl font-black tracking-tight"
         >
           Voxium.
         </Link>

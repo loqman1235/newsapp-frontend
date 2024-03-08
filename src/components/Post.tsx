@@ -29,7 +29,7 @@ const Post = ({ mode = "large" }: PostProps) => {
         <div>
           <Link
             to="/"
-            className="mb-3 block font-mono text-xl font-bold leading-tight transition duration-500 hover:text-red-600"
+            className="mb-3 block font-mono text-xl font-bold leading-tight transition duration-500 hover:text-accent"
           >
             Tech Giants Unveil Breakthrough AI...
           </Link>
@@ -38,7 +38,7 @@ const Post = ({ mode = "large" }: PostProps) => {
     );
   } else {
     return (
-      <div className="relative flex w-full items-start gap-3 pt-5">
+      <div className="relative flex w-full items-start gap-3 overflow-hidden pt-5">
         <span className="absolute -top-5 left-0 h-px w-3/12 bg-foreground/10"></span>
         {/* THUMBNAIL */}
         <Link to="/" className="block h-20 w-20 overflow-hidden bg-slate-300">
@@ -52,7 +52,7 @@ const Post = ({ mode = "large" }: PostProps) => {
         <div className="flex h-full w-[calc(100%-80px)] flex-col justify-between">
           <Link
             to="/"
-            className="block font-mono  font-bold transition duration-500 hover:text-red-600"
+            className="block font-mono  font-bold transition duration-500 hover:text-accent"
           >
             Tech Giants Unveil Breakthrough AI...
           </Link>

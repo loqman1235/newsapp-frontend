@@ -128,7 +128,7 @@ const Footer = () => {
             href="https://www.facebook.com/loqman.axel.djefafla"
             target="_blank"
           >
-            Loqman Djefafla
+            Loqmane Djefafla
           </a>
         </p>
       </div>
