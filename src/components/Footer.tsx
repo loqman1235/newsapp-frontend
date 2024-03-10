@@ -5,9 +5,9 @@ const Footer = () => {
   return (
     <div className="w-full bg-foreground text-background">
       <div className="container max-w-6xl">
-        <div className="grid grid-cols-1 gap-10 py-10 md:grid-cols-5">
+        <div className="grid grid-cols-1 gap-10 py-10 md:grid-cols-4">
           {/* About */}
-          <div className="md:col-span-2">
+          <div>
             <h1 className="mb-2 border-b border-muted-foreground/20 pb-2 font-mono text-xl font-bold">
               Voxium
             </h1>
@@ -122,7 +122,8 @@ const Footer = () => {
 
         {/* Copyright */}
         <p className=" border-t border-muted-foreground/20  py-4 text-center text-sm text-muted-foreground">
-          &copy; 2022 Voxium. All rights reserved. Developed by{" "}
+          &copy; {new Date().getFullYear()} Voxium. All rights reserved.
+          Developed by{" "}
           <a
             className="hover:underline"
             href="https://www.facebook.com/loqman.axel.djefafla"
