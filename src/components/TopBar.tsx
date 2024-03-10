@@ -13,6 +13,12 @@ const TopBar = () => {
     <nav className="w-full bg-foreground py-2.5">
       <div className="container flex max-w-6xl items-center justify-between">
         <ul className="flex items-center">
+          <li className="hidden border-r border-r-primary-foreground/15 px-4 text-muted/60 transition first:pl-0 last:border-none last:pr-0 hover:text-primary-foreground md:block">
+            <Link to={`/about`}>About</Link>
+          </li>
+          <li className="hidden border-r border-r-primary-foreground/15 px-4 text-muted/60 transition first:pl-0 last:border-none last:pr-0 hover:text-primary-foreground md:block">
+            <Link to={`/Contact`}>Contact</Link>
+          </li>
           {topbarLinks.map((link) => (
             <li className="border-r border-r-primary-foreground/15 px-4 text-muted/60 transition first:pl-0 last:border-none last:pr-0 hover:text-primary-foreground">
               <Link to={`/${link.split(" ").join("-").toLowerCase()}`}>
