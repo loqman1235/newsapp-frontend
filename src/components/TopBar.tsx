@@ -6,7 +6,7 @@ import {
 } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-const topbarLinks = ["About", "Contact", "Sign Up", "Sign In"] as const;
+const topbarLinks = ["Sign Up", "Sign In"] as const;
 
 const TopBar = () => {
   return (

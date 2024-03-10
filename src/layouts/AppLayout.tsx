@@ -1,4 +1,4 @@
-import BreakingNewsBar from "@/components/BreakingNewsBar";
+// import BreakingNewsBar from "@/components/BreakingNewsBar";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
@@ -10,7 +10,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <div>
       <Header />
-      <BreakingNewsBar />
+      {/* <BreakingNewsBar /> */}
 
       {children}
 
