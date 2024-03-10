@@ -39,7 +39,7 @@ const Post = ({ mode = "large" }: PostProps) => {
   } else {
     return (
       <div className="relative flex w-full items-start gap-3 overflow-hidden pt-5">
-        <span className="absolute -top-5 left-0 h-px w-3/12 bg-foreground/10"></span>
+        {/* <span className="absolute -top-5 left-0 h-px w-3/12 bg-foreground/10"></span> */}
         {/* THUMBNAIL */}
         <Link to="/" className="block h-20 w-20 overflow-hidden bg-slate-300">
           <img
