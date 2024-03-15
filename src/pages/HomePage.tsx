@@ -2,8 +2,17 @@ import HeroSection from "@/components/HeroSection";
 import LatestPostsSection from "@/components/LatestPostsSection";
 import MustReadSection from "@/components/MustReadSection";
 import SideBar from "@/components/SideBar";
+import { RootState } from "@/app/store";
+import { useSelector } from "react-redux";
 
 const HomePage = () => {
+  const { user, accessToken, isAuthenticated, status } = useSelector<
+    RootState,
+    RootState["auth"]
+  >((state) => state.auth);
+
+  console.log(user, accessToken, isAuthenticated, status);
+
   return (
     <>
       <HeroSection />

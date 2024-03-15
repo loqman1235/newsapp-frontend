@@ -133,6 +133,7 @@ const SignUpPage = () => {
             </Link>
           </p>
           <Button
+            type="submit"
             disabled={isSubmitting}
             variant="default"
             size="lg"
