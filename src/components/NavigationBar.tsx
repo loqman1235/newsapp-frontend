@@ -74,7 +74,7 @@ const NavigationBar = () => {
       {/* NAVIGATION MENU MOBILE */}
 
       <div
-        className={`relative z-30 h-0 w-full origin-top-left scale-y-0 bg-background transition-all duration-300 ease-out ${navMenuActive && "h-auto scale-y-100"} delay-75`}
+        className={`relative z-30 h-0 w-full origin-top-left scale-y-0 bg-background transition-all duration-300 ease-out md:hidden ${navMenuActive && "h-auto scale-y-100"} delay-75`}
       >
         <ul className="grid grid-cols-4 grid-rows-2 gap-5 p-8">
           {navLinks.map((link) => (

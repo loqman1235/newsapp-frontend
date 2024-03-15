@@ -25,3 +25,5 @@ dist-ssr
 
 public/free-news-website-templates.webp
 public/news-9-papper.webp
+
+.env
