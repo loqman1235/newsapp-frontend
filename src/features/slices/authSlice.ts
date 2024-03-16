@@ -1,3 +1,4 @@
+import { getItemFromLocalStorage } from "@/lib/utils";
 import api from "@/services/api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
@@ -83,26 +84,46 @@ export const verifyTokenAsync = createAsyncThunk(
   },
 );
 
-const getAccessTokenFromLocalStorage = () => {
-  const accessToken = localStorage.getItem("accessToken");
-  if (accessToken) {
-    return JSON.parse(accessToken);
-  }
-  return null;
-};
+// Refresh Token Thunk
+export const refreshTokenAsync = createAsyncThunk(
+  "auth/refresh",
+  async (_, { getState, rejectWithValue }) => {
+    const state = getState() as { auth: AuthState };
 
-const getUserFromLocalStorage = () => {
-  const user = localStorage.getItem("user");
-  if (user) {
-    return JSON.parse(user);
-  }
-  return null;
-};
+    try {
+      const response = await api.post("/auth/refresh-token", _, {
+        withCredentials: true,
+      });
+
+      if (!response.data.accessToken) {
+        state.auth.isAuth = false;
+        state.auth.user = null;
+        return rejectWithValue("Access token is missing");
+      }
+
+      // set token and user in local storage
+      localStorage.setItem(
+        "accessToken",
+        JSON.stringify(response.data.accessToken),
+      );
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+
+      console.log("Token has been refreshed");
+
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data.message);
+        return rejectWithValue(error.response?.data.message);
+      }
+    }
+  },
+);
 
 const initialState: AuthState = {
-  accessToken: getAccessTokenFromLocalStorage(),
-  user: getUserFromLocalStorage(),
-  isAuth: !!getAccessTokenFromLocalStorage(),
+  accessToken: getItemFromLocalStorage("accessToken"),
+  user: getItemFromLocalStorage("user"),
+  isAuth: !!getItemFromLocalStorage("accessToken"),
   status: "idle",
 };
 
@@ -136,6 +157,20 @@ export const authSlice = createSlice({
       .addCase(verifyTokenAsync.rejected, (state) => {
         state.status = "failed";
         state.isAuth = false;
+      })
+      .addCase(refreshTokenAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(refreshTokenAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.accessToken = action.payload.accessToken;
+        state.user = action.payload.user;
+        state.isAuth = true;
+      })
+      .addCase(refreshTokenAsync.rejected, (state) => {
+        state.status = "failed";
+        state.isAuth = false;
+        state.user = null;
       });
   },
 });

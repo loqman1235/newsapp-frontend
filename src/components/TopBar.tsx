@@ -43,10 +43,6 @@ const TopBar = () => {
 
         <ul className="flex items-center gap-5">
           <li className="hidden  text-muted/60 transition first:pl-0 last:border-none last:pr-0 hover:text-primary-foreground md:block">
-            <Link to={`/dashboard`}>Dashboard</Link>
-          </li>
-
-          <li className="hidden  text-muted/60 transition first:pl-0 last:border-none last:pr-0 hover:text-primary-foreground md:block">
             <Link to={`/about`}>About</Link>
           </li>
           <li className="hidden  text-muted/60 transition first:pl-0 last:border-none last:pr-0 hover:text-primary-foreground md:block">

@@ -5,10 +5,14 @@ import SignInPage from "@/pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import { RootState } from "@/app/store";
 import { useSelector } from "react-redux";
-import { verifyTokenAsync } from "./features/slices/authSlice";
+import {
+  refreshTokenAsync,
+  verifyTokenAsync,
+} from "./features/slices/authSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
 import { useEffect } from "react";
+import { hasTokenExpired } from "./lib/utils";
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,11 +24,14 @@ const App = () => {
 
   useEffect(() => {
     if (accessToken) {
+      if (hasTokenExpired(accessToken)) {
+        dispatch(refreshTokenAsync());
+      }
+
       dispatch(verifyTokenAsync({ accessToken }));
     }
   }, [accessToken, dispatch, location.pathname]);
 
-  console.log("IS AUTHENTICATED", isAuth);
   return (
     <AppLayout>
       <Routes>
