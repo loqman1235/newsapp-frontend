@@ -8,8 +8,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useDispatch } from "react-redux";
-import { loginThunk } from "@/services/authService";
 import { AppDispatch } from "@/app/store";
+import { loginAsync } from "@/features/slices/authSlice";
 
 const SignInSchema = z.object({
   email: z
@@ -38,17 +38,17 @@ const SignInPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const onSubmit: SubmitHandler<SignInFormType> = async (data) => {
     try {
-      const response = await dispatch(loginThunk(data));
+      const response = await dispatch(loginAsync(data));
 
-      if (loginThunk.fulfilled.match(response)) {
+      if (loginAsync.fulfilled.match(response)) {
         reset();
         navigate("/");
       }
 
-      if (loginThunk.rejected.match(response)) {
+      if (loginAsync.rejected.match(response)) {
         setError("root", {
           type: "custom",
-          message: response.payload,
+          message: response.payload as string,
         });
       }
     } catch (error) {

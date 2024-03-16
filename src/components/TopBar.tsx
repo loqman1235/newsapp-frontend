@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { LogOut } from "lucide-react";
 
 const TopBar = () => {
-  const { isAuthenticated, user } = useSelector<RootState, RootState["auth"]>(
+  const { isAuth, user } = useSelector<RootState, RootState["auth"]>(
     (state) => state.auth,
   );
   return (
@@ -43,12 +43,16 @@ const TopBar = () => {
 
         <ul className="flex items-center gap-5">
           <li className="hidden  text-muted/60 transition first:pl-0 last:border-none last:pr-0 hover:text-primary-foreground md:block">
+            <Link to={`/dashboard`}>Dashboard</Link>
+          </li>
+
+          <li className="hidden  text-muted/60 transition first:pl-0 last:border-none last:pr-0 hover:text-primary-foreground md:block">
             <Link to={`/about`}>About</Link>
           </li>
           <li className="hidden  text-muted/60 transition first:pl-0 last:border-none last:pr-0 hover:text-primary-foreground md:block">
             <Link to={`/Contact`}>Contact</Link>
           </li>
-          {isAuthenticated ? (
+          {isAuth ? (
             <>
               <li className="text-muted/60 transition first:pl-0 last:border-none last:pr-0 hover:text-primary-foreground md:block">
                 <Link to={`/profile`}>{user?.name}</Link>

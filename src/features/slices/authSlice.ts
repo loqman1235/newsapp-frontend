@@ -1,67 +1,143 @@
-import { createSlice } from "@reduxjs/toolkit";
+import api from "@/services/api";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
 
-type UserType = {
+interface IUser {
   id: string;
   name: string;
   email: string;
   role: "AUTHOR" | "MODERATOR" | "ADMIN";
   createdAt: string;
   updatedAt: string;
-};
+}
 
 type AuthState = {
-  user: null | UserType;
-  accessToken: null | string;
-  isAuthenticated: boolean;
-  status: "idle" | "pending" | "succeeded" | "failed";
+  accessToken: string | null;
+  user: null | IUser;
+  isAuth: boolean;
+  status: "idle" | "loading" | "failed";
 };
 
-// Get user from local storage
-const getStoredUser = () => {
-  const user = localStorage.getItem("user");
+// Login Thunk
+export const loginAsync = createAsyncThunk(
+  "auth/login",
+  async (data: { email: string; password: string }, { rejectWithValue }) => {
+    try {
+      const response = await api.post("/auth/signin", data);
 
-  if (user) {
-    return JSON.parse(user);
-  }
+      const { accessToken, user } = response.data;
+      // // set token and user in local storage
+      localStorage.setItem("accessToken", JSON.stringify(accessToken));
+      localStorage.setItem("user", JSON.stringify(user));
 
-  return null;
-};
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data.message);
+        return rejectWithValue(error.response?.data.message);
+      }
+    }
+  },
+);
 
-const getStoredAccessToken = () => {
+// Verify Token Thunk
+export const verifyTokenAsync = createAsyncThunk(
+  "auth/verify",
+  async (
+    { accessToken }: { accessToken: string },
+    { getState, rejectWithValue },
+  ) => {
+    const state = getState() as { auth: AuthState };
+    if (!accessToken) {
+      state.auth.isAuth = false;
+      state.auth.user = null;
+
+      return rejectWithValue("Access token is missing");
+    }
+
+    try {
+      const response = await api.get("/auth/verify", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const isValidToken = response.data.isValid;
+
+      if (!isValidToken) {
+        state.auth.isAuth = false;
+        state.auth.user = null;
+        return rejectWithValue("Access token is invalid");
+      }
+
+      state.auth.isAuth = true;
+
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data.message);
+        return rejectWithValue(error.response?.data.message);
+      }
+    }
+  },
+);
+
+const getAccessTokenFromLocalStorage = () => {
   const accessToken = localStorage.getItem("accessToken");
-
   if (accessToken) {
     return JSON.parse(accessToken);
   }
+  return null;
+};
 
+const getUserFromLocalStorage = () => {
+  const user = localStorage.getItem("user");
+  if (user) {
+    return JSON.parse(user);
+  }
   return null;
 };
 
 const initialState: AuthState = {
-  user: getStoredUser(),
-  accessToken: getStoredAccessToken(),
-  isAuthenticated: !!getStoredAccessToken(),
+  accessToken: getAccessTokenFromLocalStorage(),
+  user: getUserFromLocalStorage(),
+  isAuth: !!getAccessTokenFromLocalStorage(),
   status: "idle",
 };
 
-const authSlice = createSlice({
-  initialState,
+export const authSlice = createSlice({
   name: "auth",
-  reducers: {
-    setToken(state, { payload: { accessToken, user } }) {
-      state.accessToken = accessToken;
-      state.isAuthenticated = true;
-      state.user = user;
-      state.status = "succeeded";
-    },
-    removeToken(state) {
-      state.accessToken = null;
-      state.isAuthenticated = false;
-      state.user = null;
-      state.status = "succeeded";
-    },
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(loginAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.accessToken = action.payload.accessToken;
+        state.user = action.payload.user;
+        state.isAuth = true;
+      })
+      .addCase(loginAsync.rejected, (state) => {
+        state.status = "failed";
+        state.isAuth = false;
+        state.user = null;
+      })
+      .addCase(verifyTokenAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(verifyTokenAsync.fulfilled, (state) => {
+        state.status = "idle";
+        state.isAuth = true;
+      })
+      .addCase(verifyTokenAsync.rejected, (state) => {
+        state.status = "failed";
+        state.isAuth = false;
+      });
   },
 });
 
-export const { setToken, removeToken } = authSlice.actions;
 export default authSlice.reducer;
