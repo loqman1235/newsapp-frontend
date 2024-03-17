@@ -33,7 +33,7 @@ const App = () => {
       if (isAuth) {
         dispatch(refreshTokenAsync());
       }
-    }, 60000);
+    }, 840000);
 
     return () => clearInterval(intervalId);
   }, [isAuth, dispatch]);
