@@ -74,6 +74,8 @@ export const verifyTokenAsync = createAsyncThunk(
 
       state.auth.isAuth = true;
 
+      console.log(response.data, "verifying token");
+
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -91,9 +93,13 @@ export const refreshTokenAsync = createAsyncThunk(
     const state = getState() as { auth: AuthState };
 
     try {
-      const response = await api.post("/auth/refresh-token", _, {
-        withCredentials: true,
-      });
+      const response = await api.post(
+        "/auth/refresh-token",
+        {},
+        {
+          withCredentials: true,
+        },
+      );
 
       if (!response.data.accessToken) {
         state.auth.isAuth = false;
@@ -109,6 +115,44 @@ export const refreshTokenAsync = createAsyncThunk(
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
       console.log("Token has been refreshed");
+
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data.message);
+        return rejectWithValue(error.response?.data.message);
+      }
+    }
+  },
+);
+
+// Logout Thunk
+export const logoutAsync = createAsyncThunk(
+  "auth/logout",
+  async (
+    { accessToken }: { accessToken: string },
+    { getState, rejectWithValue },
+  ) => {
+    const state = getState() as { auth: AuthState };
+
+    if (!accessToken) {
+      state.auth.isAuth = false;
+      state.auth.user = null;
+    }
+
+    try {
+      const response = await api.post(
+        "/auth/signout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("user");
 
       return response.data;
     } catch (error) {
@@ -168,6 +212,20 @@ export const authSlice = createSlice({
         state.isAuth = true;
       })
       .addCase(refreshTokenAsync.rejected, (state) => {
+        state.status = "failed";
+        state.isAuth = false;
+        state.user = null;
+      })
+      .addCase(logoutAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(logoutAsync.fulfilled, (state) => {
+        state.status = "idle";
+        state.accessToken = null;
+        state.user = null;
+        state.isAuth = false;
+      })
+      .addCase(logoutAsync.rejected, (state) => {
         state.status = "failed";
         state.isAuth = false;
         state.user = null;

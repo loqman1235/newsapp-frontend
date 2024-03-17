@@ -12,7 +12,6 @@ import {
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
 import { useEffect } from "react";
-import { hasTokenExpired } from "./lib/utils";
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,13 +23,20 @@ const App = () => {
 
   useEffect(() => {
     if (accessToken) {
-      if (hasTokenExpired(accessToken)) {
-        dispatch(refreshTokenAsync());
-      }
-
       dispatch(verifyTokenAsync({ accessToken }));
     }
   }, [accessToken, dispatch, location.pathname]);
+
+  useEffect(() => {
+    // Refresh token every 1 minute
+    const intervalId = setInterval(() => {
+      if (isAuth) {
+        dispatch(refreshTokenAsync());
+      }
+    }, 60000);
+
+    return () => clearInterval(intervalId);
+  }, [isAuth, dispatch]);
 
   return (
     <AppLayout>

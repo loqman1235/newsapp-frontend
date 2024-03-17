@@ -4,15 +4,35 @@ import {
   FaYoutube,
   FaInstagram,
 } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "@/app/store";
 import { useSelector } from "react-redux";
 import { LogOut } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/app/store";
+import { logoutAsync } from "@/features/slices/authSlice";
 
 const TopBar = () => {
-  const { isAuth, user } = useSelector<RootState, RootState["auth"]>(
-    (state) => state.auth,
-  );
+  const { isAuth, user, accessToken } = useSelector<
+    RootState,
+    RootState["auth"]
+  >((state) => state.auth);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      if (accessToken) {
+        const response = await dispatch(logoutAsync({ accessToken })).unwrap();
+        if (response) {
+          navigate("/sign-in");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <nav className="w-full bg-foreground py-2.5">
       <div className="container flex max-w-6xl items-center justify-between">
@@ -54,9 +74,12 @@ const TopBar = () => {
                 <Link to={`/profile`}>{user?.name}</Link>
               </li>
               <li className="text-muted/60 transition first:pl-0 last:border-none last:pr-0 hover:text-primary-foreground md:block">
-                <Link to={`/profile`} className="flex items-center gap-2">
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2"
+                >
                   Logout <LogOut className="h-4 w-4" />
-                </Link>
+                </button>
               </li>
             </>
           ) : (
