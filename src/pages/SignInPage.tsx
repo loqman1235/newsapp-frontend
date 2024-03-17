@@ -51,6 +51,8 @@ const SignInPage = () => {
           message: response.payload as string,
         });
       }
+
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -114,7 +116,9 @@ const SignInPage = () => {
 
             {/* Root error */}
             {errors.root && (
-              <p className="mt-2 text-sm text-red-700">{errors.root.message}</p>
+              <div className="mt-2 rounded-sm bg-red-100 p-5">
+                <p className="text-sm text-red-700">{errors.root.message}</p>
+              </div>
             )}
 
             <p>

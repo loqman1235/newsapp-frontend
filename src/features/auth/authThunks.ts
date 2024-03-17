@@ -19,6 +19,12 @@ export const loginAsync = createAsyncThunk(
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError) {
+        if (error.code === "ERR_NETWORK") {
+          return rejectWithValue(
+            "Unable to connect to the server! Please check your internet connection and try again later.",
+          );
+        }
+
         console.log(error.response?.data.message);
         return rejectWithValue(error.response?.data.message);
       }
@@ -62,6 +68,9 @@ export const verifyTokenAsync = createAsyncThunk(
 
       return response.data;
     } catch (error) {
+      state.auth.isAuth = false;
+      state.auth.user = null;
+
       if (error instanceof AxiosError) {
         console.log(error.response?.data.message);
         return rejectWithValue(error.response?.data.message);
@@ -102,6 +111,8 @@ export const refreshTokenAsync = createAsyncThunk(
 
       return response.data;
     } catch (error) {
+      state.auth.isAuth = false;
+      state.auth.user = null;
       if (error instanceof AxiosError) {
         console.log(error.response?.data.message);
         return rejectWithValue(error.response?.data.message);
@@ -140,6 +151,8 @@ export const logoutAsync = createAsyncThunk(
 
       return response.data;
     } catch (error) {
+      state.auth.isAuth = false;
+      state.auth.user = null;
       if (error instanceof AxiosError) {
         console.log(error.response?.data.message);
         return rejectWithValue(error.response?.data.message);
