@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
-import { loginAsync } from "@/features/slices/authSlice";
+import { loginAsync } from "@/features/auth/authThunks";
 
 const SignInSchema = z.object({
   email: z

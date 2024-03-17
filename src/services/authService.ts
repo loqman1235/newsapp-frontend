@@ -1,4 +1,4 @@
-import { setToken } from "@/features/slices/authSlice";
+import { setToken } from "@/features/auth/authSlice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "./api";
 import { AxiosError } from "axios";

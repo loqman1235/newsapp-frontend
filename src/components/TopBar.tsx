@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
-import { logoutAsync } from "@/features/slices/authSlice";
+import { logoutAsync } from "@/features/auth/authThunks";
 
 const TopBar = () => {
   const { isAuth, user, accessToken } = useSelector<

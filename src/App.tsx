@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import {
   refreshTokenAsync,
   verifyTokenAsync,
-} from "./features/slices/authSlice";
+} from "./features/auth/authThunks";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
 import { useEffect } from "react";
