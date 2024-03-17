@@ -68,9 +68,6 @@ export const verifyTokenAsync = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      state.auth.isAuth = false;
-      state.auth.user = null;
-
       if (error instanceof AxiosError) {
         console.log(error.response?.data.message);
         return rejectWithValue(error.response?.data.message);
@@ -111,8 +108,6 @@ export const refreshTokenAsync = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      state.auth.isAuth = false;
-      state.auth.user = null;
       if (error instanceof AxiosError) {
         console.log(error.response?.data.message);
         return rejectWithValue(error.response?.data.message);
@@ -151,8 +146,6 @@ export const logoutAsync = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      state.auth.isAuth = false;
-      state.auth.user = null;
       if (error instanceof AxiosError) {
         console.log(error.response?.data.message);
         return rejectWithValue(error.response?.data.message);
