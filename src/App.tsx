@@ -41,10 +41,7 @@ const App = () => {
   return (
     <AppLayout>
       <Routes>
-        <Route
-          path="/"
-          element={isAuth ? <HomePage /> : <Navigate to="/sign-in" />}
-        />
+        <Route path="/" element={<HomePage />} />
 
         <Route
           path="/sign-in"

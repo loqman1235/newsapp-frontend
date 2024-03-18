@@ -1,39 +1,44 @@
 import { shortenText } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import { IPost } from "@/types";
 
-interface HeroSectionItemProps {
-  image: string;
-  title: string;
-  category: string;
+interface HeroSectionItemProps extends IPost {
   fontSize?: string;
 }
 
 const HeroSectionItem = ({
-  image,
+  slug,
+  thumbnail,
   title,
-  category,
+  categories,
   fontSize = "text-xl md:text-3xl",
 }: HeroSectionItemProps) => {
   return (
     <Link
-      to={`/news/${title}`}
+      to={`/${slug}`}
       className="relative block h-full w-full overflow-hidden"
     >
       {/* THUMBNAIL */}
       <div className="h-full w-full">
         {/* IMAGE */}
-        <img src={image} alt={title} className="h-full w-full object-cover" />
+        <img
+          src={thumbnail.url}
+          alt={title}
+          className="h-full w-full object-cover"
+        />
       </div>
 
-      <div className="absolute inset-0 flex items-end bg-black/50 p-2  transition-all duration-700 hover:bg-black/20">
+      <div className="absolute inset-0 flex items-end bg-black/50 p-5  transition-all duration-700 hover:bg-black/20">
         <div className="flex flex-col gap-2">
           {/* CATEGORY */}
-          <Link
-            to={`/cat/${title}`}
-            className="block w-fit bg-black/80  px-2 py-px text-sm capitalize tracking-wide text-white"
-          >
-            {category}
-          </Link>
+          {categories.map((category) => (
+            <Link
+              to={`/cat/${title}`}
+              className="block w-fit bg-black/80  px-2 py-px text-sm capitalize tracking-wide text-white"
+            >
+              {category.name}
+            </Link>
+          ))}
           {/* TITLE */}
           <h1
             className={`font-mono font-bold leading-tight text-white ${fontSize}`}

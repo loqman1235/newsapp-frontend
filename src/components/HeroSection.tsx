@@ -1,17 +1,45 @@
-import { heroSectionNewsData } from "@/data";
 import HeroSectionItem from "./HeroSectionItem";
-
+import { IPost } from "@/types";
+import { useEffect, useState } from "react";
+import api from "@/services/api";
+import { Skeleton } from "@/components/ui/skeleton";
 const HeroSection = () => {
+  const [heroSectionPosts, setHeroSectionPosts] = useState<IPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHeroSectionPosts = async () => {
+      try {
+        const response = await api.get("/posts?limit=4");
+        const { posts } = response.data;
+
+        if (response.status === 200) {
+          setHeroSectionPosts(posts);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchHeroSectionPosts();
+  }, []);
+
   const renderHeroSectionItem = (start: number, end: number) => {
-    return heroSectionNewsData
-      .slice(start, end)
-      .map((item) => (
-        <HeroSectionItem
-          key={item.id}
-          {...item}
-          fontSize={`text-xl ${start === 0 && "md:text-3xl"}`}
-        />
-      ));
+    return isLoading ? (
+      <Skeleton className="h-full w-full" />
+    ) : (
+      heroSectionPosts
+        .slice(start, end)
+        .map((item) => (
+          <HeroSectionItem
+            key={item.id}
+            {...item}
+            fontSize={`text-xl ${start === 0 && "md:text-3xl"}`}
+          />
+        ))
+    );
   };
 
   return (
