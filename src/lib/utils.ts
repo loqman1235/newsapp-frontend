@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function shortenText(text: string, maxLength = 30) {
+export function shortenText(text: string, maxLength = 40) {
   if (text.length <= maxLength) {
     return text;
   }

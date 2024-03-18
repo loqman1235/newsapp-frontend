@@ -1,38 +1,23 @@
 import HeroSectionItem from "./HeroSectionItem";
-import { IPost } from "@/types";
-import { useEffect, useState } from "react";
-import api from "@/services/api";
 import { Skeleton } from "@/components/ui/skeleton";
+import useFetch from "@/hooks/useFetch";
+import { IPost } from "@/types";
 const HeroSection = () => {
-  const [heroSectionPosts, setHeroSectionPosts] = useState<IPost[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchHeroSectionPosts = async () => {
-      try {
-        const response = await api.get("/posts?limit=4");
-        const { posts } = response.data;
-
-        if (response.status === 200) {
-          setHeroSectionPosts(posts);
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchHeroSectionPosts();
-  }, []);
+  const { data: heroSectionPosts, isLoading } = useFetch("/posts?limit=4");
 
   const renderHeroSectionItem = (start: number, end: number) => {
-    return isLoading ? (
+    if (!isLoading) {
+      console.log(heroSectionPosts);
+    }
+    return isLoading ||
+      !heroSectionPosts ||
+      !heroSectionPosts.posts ||
+      heroSectionPosts.posts.length === 0 ? (
       <Skeleton className="h-full w-full" />
     ) : (
-      heroSectionPosts
+      heroSectionPosts?.posts
         .slice(start, end)
-        .map((item) => (
+        .map((item: IPost) => (
           <HeroSectionItem
             key={item.id}
             {...item}

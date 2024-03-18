@@ -12,7 +12,8 @@ import {
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
 import { useEffect } from "react";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isAuth, accessToken } = useSelector<RootState, RootState["auth"]>(
@@ -52,6 +53,7 @@ const App = () => {
           element={isAuth ? <Navigate to="/" /> : <SignUpPage />}
         />
       </Routes>
+      <ToastContainer closeOnClick hideProgressBar theme="colored" />
     </AppLayout>
   );
 };

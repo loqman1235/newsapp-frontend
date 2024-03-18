@@ -33,10 +33,11 @@ const HeroSectionItem = ({
           {/* CATEGORY */}
           {categories.map((category) => (
             <Link
+              key={category?.id}
               to={`/cat/${title}`}
               className="block w-fit bg-black/80  px-2 py-px text-sm capitalize tracking-wide text-white"
             >
-              {category.name}
+              {category?.name}
             </Link>
           ))}
           {/* TITLE */}
