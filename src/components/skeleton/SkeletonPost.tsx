@@ -7,7 +7,7 @@ interface PostProps {
 const SkeletonPost = ({ mode = "large" }: PostProps) => {
   if (mode === "large") {
     return (
-      <div className="flex w-full flex-col gap-5 overflow-hidden">
+      <div className="mb-5 flex w-full flex-col gap-5 overflow-hidden md:mb-0">
         {/* THUMBNAIL */}
         <div className="group relative block h-[220px] w-full overflow-hidden">
           <Skeleton className="h-full w-full" />

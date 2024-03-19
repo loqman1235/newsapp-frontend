@@ -11,7 +11,6 @@ const SideBar = () => {
         <PopularPost />
         <PopularPost />
         <PopularPost />
-        <PopularPost />
       </div>
     </aside>
   );

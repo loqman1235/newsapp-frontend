@@ -14,6 +14,7 @@ import { AppDispatch } from "@/app/store";
 import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LatestNewsPage from "./pages/LatestNewsPage";
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isAuth, accessToken } = useSelector<RootState, RootState["auth"]>(
@@ -43,6 +44,7 @@ const App = () => {
     <AppLayout>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/latest" element={<LatestNewsPage />} />
 
         <Route
           path="/sign-in"
