@@ -14,7 +14,10 @@ const LatestPostsSection = () => {
           ? Array.from({ length: 6 }).map((_, i) => (
               <SkeletonPost key={i} mode={i > 2 ? "small" : "large"} />
             ))
-          : latestPosts?.posts.map((post: IPost, i: number) => (
+          : latestPosts?.posts &&
+            latestPosts?.posts.length > 0 &&
+            latestPosts &&
+            latestPosts?.posts.map((post: IPost, i: number) => (
               <Post key={post.id} mode={i > 2 ? "small" : "large"} {...post} />
             ))}
       </Section>

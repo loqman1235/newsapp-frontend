@@ -3,16 +3,25 @@ import { AxiosError } from "axios";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const useFetch = (url: string): { data: any; isLoading: boolean } => {
-  const [data, setData] = useState([]);
+const useFetch = (
+  url: string,
+  slug?: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): { data: any; isLoading: boolean } => {
+  const [data, setData] = useState([] || {});
   const [isLoading, setIsLoading] = useState(true);
   // const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get(url);
+        let response;
+
+        if (slug) {
+          response = await api.get(`${url}/${slug}`);
+        } else {
+          response = await api.get(url);
+        }
 
         if (response.status === 200) {
           setData(response.data);
@@ -32,7 +41,7 @@ const useFetch = (url: string): { data: any; isLoading: boolean } => {
     };
 
     fetchData();
-  }, [url]);
+  }, [url, slug]);
 
   return { data, isLoading };
 };
