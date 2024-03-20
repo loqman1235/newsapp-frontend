@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { FaChevronDown, FaMagnifyingGlass } from "react-icons/fa6";
 import HamburgerBtn from "./HamburgerBtn";
@@ -6,17 +6,6 @@ import { useState } from "react";
 import useFetch from "@/hooks/useFetch";
 import { ICategory } from "@/types";
 import { Skeleton } from "./ui/skeleton";
-
-const navLinks = [
-  "Home",
-  "News",
-  "Politics",
-  "Business",
-  "Sports",
-  "Health",
-  "Tech",
-  "Science",
-] as const;
 
 const NavigationBar = () => {
   const [navMenuActive, setNavMenuActive] = useState(false);
