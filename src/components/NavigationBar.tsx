@@ -1,8 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { FaChevronDown, FaMagnifyingGlass } from "react-icons/fa6";
 import HamburgerBtn from "./HamburgerBtn";
 import { useState } from "react";
+import useFetch from "@/hooks/useFetch";
+import { ICategory } from "@/types";
+import { Skeleton } from "./ui/skeleton";
 
 const navLinks = [
   "Home",
@@ -14,8 +17,12 @@ const navLinks = [
   "Tech",
   "Science",
 ] as const;
+
 const NavigationBar = () => {
   const [navMenuActive, setNavMenuActive] = useState(false);
+  const { data: catResult, isLoading } = useFetch("/cats");
+  const navListStyles =
+    "flex items-center justify-center h-full px-5 text-base font-medium text-muted-foreground transition first:pl-0 last:border-none last:pr-0 hover:text-foreground";
 
   const toggleNavMenu = () => {
     setNavMenuActive((prev) => !prev);
@@ -26,28 +33,41 @@ const NavigationBar = () => {
       <nav className="h-14 w-full bg-background">
         <div className="container flex h-full max-w-6xl items-center justify-between gap-5">
           <ul className="hidden h-full items-center md:flex">
-            {/* Display only the first 4 links */}
-            {navLinks.slice(0, 5).map((link) => (
-              <li
-                key={link}
-                className={`h-full px-5 text-base font-medium transition first:pl-0 last:border-none last:pr-0 hover:text-slate-900 ${
-                  link === "Home"
-                    ? "relative font-semibold text-slate-900 before:absolute before:bottom-0 before:left-0 before:h-[4px] before:w-full before:rounded-full before:bg-slate-300"
-                    : "text-muted-foreground"
-                }`}
+            <li className={navListStyles}>
+              <NavLink
+                className={({ isActive }) =>
+                  isActive ? "font-bold text-foreground" : ""
+                }
+                to="/"
               >
-                <Link
-                  className="flex h-full items-center"
-                  to={`/${link.toLowerCase()}`}
-                >
-                  {link}
-                </Link>
-              </li>
-            ))}
+                Home
+              </NavLink>
+            </li>
+
+            {isLoading
+              ? Array.from({ length: 5 }).map((_, index) => (
+                  <li key={index} className="flex items-center justify-center">
+                    <Skeleton className="mr-5 h-4 w-20" />
+                  </li>
+                ))
+              : catResult &&
+                catResult.categories.length > 0 &&
+                catResult.categories.slice(0, 4).map((cat: ICategory) => (
+                  <li key={cat.id} className={navListStyles}>
+                    <NavLink
+                      className={({ isActive }) =>
+                        isActive ? "font-bold text-foreground" : ""
+                      }
+                      to={`${cat.slug}`}
+                    >
+                      {cat.name}
+                    </NavLink>
+                  </li>
+                ))}
 
             {/* More Button */}
 
-            <li className="h-full px-5 text-base font-medium text-slate-500 transition first:pl-0 last:border-none last:pr-0 hover:text-slate-900">
+            <li className={`relative ${navListStyles} group`}>
               <button
                 className="flex h-full items-center gap-1"
                 onClick={() => {
@@ -56,6 +76,26 @@ const NavigationBar = () => {
               >
                 More <FaChevronDown size={12} />
               </button>
+
+              <ul className="absolute right-0 top-full z-10 flex w-56 origin-top-right scale-y-0 flex-col gap-5 rounded-md border border-slate-200 bg-background p-5 shadow-lg ring-1 ring-black ring-opacity-5 transition-transform duration-300 ease-out focus:outline-none group-hover:scale-100">
+                {catResult &&
+                  catResult.categories &&
+                  catResult.categories.length > 0 &&
+                  catResult.categories.slice(4).map((cat: ICategory) => (
+                    <li key={cat.id}>
+                      <NavLink
+                        className={({ isActive }) =>
+                          isActive
+                            ? "font-bold text-foreground"
+                            : "text-muted-foreground transition hover:text-foreground"
+                        }
+                        to={`${cat.slug}`}
+                      >
+                        {cat.name}
+                      </NavLink>
+                    </li>
+                  ))}
+              </ul>
             </li>
           </ul>
 
@@ -64,7 +104,7 @@ const NavigationBar = () => {
           <form className="relative w-3/4 md:w-2/5">
             <Input placeholder="Search..." className=" rounded-full pl-5" />
 
-            <button className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-slate-600">
+            <button className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground transition hover:text-foreground">
               <FaMagnifyingGlass />
             </button>
           </form>
@@ -77,14 +117,39 @@ const NavigationBar = () => {
         className={`relative z-30 h-0 w-full origin-top-left scale-y-0 bg-background transition-all duration-300 ease-out md:hidden ${navMenuActive && "h-auto scale-y-100"} delay-75`}
       >
         <ul className="grid grid-cols-4 grid-rows-2 gap-5 p-8">
-          {navLinks.map((link) => (
-            <li
-              key={link}
-              className="text-base font-medium text-muted-foreground transition hover:text-foreground"
+          <li className="text-base font-medium text-muted-foreground transition hover:text-foreground">
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? "font-bold text-foreground" : ""
+              }
+              to="/"
             >
-              <Link to={`/${link.toLowerCase()}`}>{link}</Link>
-            </li>
-          ))}
+              Home
+            </NavLink>
+          </li>
+          {isLoading
+            ? Array.from({ length: 5 }).map((_, index) => (
+                <li key={index} className="flex items-center justify-center">
+                  <Skeleton className="mr-5 h-4 w-20" />
+                </li>
+              ))
+            : catResult &&
+              catResult.categories.length > 0 &&
+              catResult.categories.map((cat: ICategory) => (
+                <li
+                  key={cat.id}
+                  className="text-base font-medium text-muted-foreground transition hover:text-foreground"
+                >
+                  <NavLink
+                    className={({ isActive }) =>
+                      isActive ? "font-bold text-foreground" : ""
+                    }
+                    to={`${cat.slug}`}
+                  >
+                    {cat.name}
+                  </NavLink>
+                </li>
+              ))}
         </ul>
       </div>
     </>

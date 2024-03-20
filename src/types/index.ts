@@ -1,6 +1,8 @@
 export interface ICategory {
   id: string;
   name: string;
+  slug: string;
+  posts?: IPost[];
 }
 
 export interface IAuthor {
