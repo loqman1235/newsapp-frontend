@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const HomePage = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [showSidebar, setShowSidebar] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(true);
   return (
     <>
       <HeroSection />

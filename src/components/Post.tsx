@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 interface PostProps extends IPost {
   mode: "large" | "small";
+  url: string;
 }
 
 const Post = ({
@@ -11,14 +12,14 @@ const Post = ({
   title,
   categories,
   thumbnail,
-  slug,
+  url,
 }: PostProps) => {
   if (mode === "large") {
     return (
       <div className="flex w-full flex-col gap-5 overflow-hidden">
         {/* THUMBNAIL */}
         <Link
-          to={`/${slug}`}
+          to={url}
           className="group relative block h-[220px] w-full overflow-hidden bg-slate-300"
         >
           <img
@@ -27,19 +28,20 @@ const Post = ({
             className="h-full w-full object-cover"
           />
 
-          {categories.map((category) => (
-            <Link
-              key={category.id}
-              to="/"
-              className="absolute left-0 top-0 block w-fit bg-black/80  px-2 py-px text-sm capitalize tracking-wide text-white"
-            >
-              {category.name}
-            </Link>
-          ))}
+          {categories &&
+            categories.map((category) => (
+              <Link
+                key={category.id}
+                to={`/${categories[0].slug}`}
+                className="absolute left-0 top-0 block w-fit bg-black/80  px-2 py-px text-sm capitalize tracking-wide text-white"
+              >
+                {category.name}
+              </Link>
+            ))}
         </Link>
         <div>
           <Link
-            to={`/${slug}`}
+            to={url}
             className="mb-3 block font-mono text-xl font-bold leading-tight transition duration-500 hover:text-accent"
           >
             {shortenText(title)}
@@ -52,10 +54,7 @@ const Post = ({
       <div className="relative flex w-full items-start gap-3 overflow-hidden pt-5">
         {/* <span className="absolute -top-5 left-0 h-px w-3/12 bg-foreground/10"></span> */}
         {/* THUMBNAIL */}
-        <Link
-          to={`/${slug}`}
-          className="block h-20 w-20 overflow-hidden bg-slate-300"
-        >
+        <Link to={url} className="block h-20 w-20 overflow-hidden bg-slate-300">
           <img
             src={thumbnail?.url}
             alt={title}
@@ -65,7 +64,7 @@ const Post = ({
 
         <div className="flex h-full w-[calc(100%-80px)] flex-col justify-between">
           <Link
-            to={`/${slug}`}
+            to={url}
             className="block font-mono  font-bold transition duration-500 hover:text-accent"
           >
             {shortenText(title)}

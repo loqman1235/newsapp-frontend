@@ -15,6 +15,8 @@ import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LatestNewsPage from "./pages/LatestNewsPage";
+// import PostPage from "./pages/PostPage";
+import CategoryPage from "./pages/CategoryPage";
 import PostPage from "./pages/PostPage";
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -45,7 +47,10 @@ const App = () => {
     <AppLayout>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/:postSlug" element={<PostPage />} />
+        {/* <Route path="/:postSlug" element={<PostPage />} /> */}
+        <Route index path="/:catSlug" element={<CategoryPage />} />
+        <Route path="/:catSlug/:postSlug" element={<PostPage />} />
+
         <Route path="/latest" element={<LatestNewsPage />} />
 
         <Route

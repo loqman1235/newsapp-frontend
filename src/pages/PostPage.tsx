@@ -1,3 +1,4 @@
+import SkeletonPostPage from "@/components/skeleton/SkeletonPostPage";
 import useFetch from "@/hooks/useFetch";
 import api from "@/services/api";
 import { useEffect } from "react";
@@ -22,10 +23,10 @@ const PostPage = () => {
   }, [postSlug]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <SkeletonPostPage />;
   } else {
     return (
-      <div className="container my-10 max-w-4xl">
+      <div className="container my-10 max-w-6xl text-start">
         <h1 className="mb-5  font-mono text-2xl font-bold">{post?.title}</h1>
         <div className="mb-5 text-sm text-muted-foreground">
           3 March 2024, John Doe

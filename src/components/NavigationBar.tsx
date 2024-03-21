@@ -56,36 +56,38 @@ const NavigationBar = () => {
 
             {/* More Button */}
 
-            <li className={`relative ${navListStyles} group`}>
-              <button
-                className="flex h-full items-center gap-1"
-                onClick={() => {
-                  console.log("More");
-                }}
-              >
-                More <FaChevronDown size={12} />
-              </button>
+            {!isLoading && catResult.categories.length > 4 && (
+              <li className={`relative ${navListStyles} group`}>
+                <button
+                  className="flex h-full items-center gap-1"
+                  onClick={() => {
+                    console.log("More");
+                  }}
+                >
+                  More <FaChevronDown size={12} />
+                </button>
 
-              <ul className="absolute right-0 top-full z-10 flex w-56 origin-top-right scale-y-0 flex-col gap-5 rounded-md border border-slate-200 bg-background p-5 shadow-lg ring-1 ring-black ring-opacity-5 transition-transform duration-300 ease-out focus:outline-none group-hover:scale-100">
-                {catResult &&
-                  catResult.categories &&
-                  catResult.categories.length > 0 &&
-                  catResult.categories.slice(4).map((cat: ICategory) => (
-                    <li key={cat.id}>
-                      <NavLink
-                        className={({ isActive }) =>
-                          isActive
-                            ? "font-bold text-foreground"
-                            : "text-muted-foreground transition hover:text-foreground"
-                        }
-                        to={`${cat.slug}`}
-                      >
-                        {cat.name}
-                      </NavLink>
-                    </li>
-                  ))}
-              </ul>
-            </li>
+                <ul className="absolute right-0 top-full z-10 flex w-56 origin-top-right scale-y-0 flex-col gap-5 rounded-md border border-slate-200 bg-background p-5 shadow-lg ring-1 ring-black ring-opacity-5 transition-transform duration-300 ease-out focus:outline-none group-hover:scale-100">
+                  {catResult &&
+                    catResult.categories &&
+                    catResult.categories.length > 0 &&
+                    catResult.categories.slice(4).map((cat: ICategory) => (
+                      <li key={cat.id}>
+                        <NavLink
+                          className={({ isActive }) =>
+                            isActive
+                              ? "font-bold text-foreground"
+                              : "text-muted-foreground transition hover:text-foreground"
+                          }
+                          to={`${cat.slug}`}
+                        >
+                          {cat.name}
+                        </NavLink>
+                      </li>
+                    ))}
+                </ul>
+              </li>
+            )}
           </ul>
 
           <HamburgerBtn menuActive={navMenuActive} onClick={toggleNavMenu} />

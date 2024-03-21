@@ -4,20 +4,18 @@ import { IPost } from "@/types";
 
 interface HeroSectionItemProps extends IPost {
   fontSize?: string;
+  url: string;
 }
 
 const HeroSectionItem = ({
-  slug,
   thumbnail,
   title,
   categories,
   fontSize = "text-xl md:text-3xl",
+  url,
 }: HeroSectionItemProps) => {
   return (
-    <Link
-      to={`/${slug}`}
-      className="relative block h-full w-full overflow-hidden"
-    >
+    <Link to={url} className="relative block h-full w-full overflow-hidden">
       {/* THUMBNAIL */}
       <div className="h-full w-full">
         {/* IMAGE */}

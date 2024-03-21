@@ -18,7 +18,12 @@ const LatestPostsSection = () => {
             latestPosts?.posts.length > 0 &&
             latestPosts &&
             latestPosts?.posts.map((post: IPost, i: number) => (
-              <Post key={post.id} mode={i > 2 ? "small" : "large"} {...post} />
+              <Post
+                key={post.id}
+                mode={i > 2 ? "small" : "large"}
+                {...post}
+                url={`/${post.categories[0].slug}/${post.slug}`}
+              />
             ))}
       </Section>
     </div>
