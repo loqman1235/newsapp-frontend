@@ -25,6 +25,7 @@ import {
   CategoryPage,
   DashboardHomePage,
 } from "@/pages";
+import CreatePostPage from "./pages/dashboard/CreatePostPage";
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -76,6 +77,7 @@ const App = () => {
         element={isAuth ? <DashboardLayout /> : <Navigate to="/sign-in" />}
       >
         <Route index element={<DashboardHomePage />} />
+        <Route path="create" element={<CreatePostPage />} />
       </Route>
 
       {/* NOT FOUND */}

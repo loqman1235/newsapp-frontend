@@ -57,12 +57,18 @@ const Sidebar = () => {
               </Link>
             </li>
             <li>
-              <Link to="/dashboard" className={`${navLinkStyles} pl-[60px]`}>
+              <Link
+                to="/dashboard/draft"
+                className={`${navLinkStyles} pl-[60px]`}
+              >
                 Drafts
               </Link>
             </li>
             <li>
-              <Link to="/dashboard" className={`${navLinkStyles} pl-[60px]`}>
+              <Link
+                to="/dashboard/create"
+                className={`${navLinkStyles} pl-[60px]`}
+              >
                 Create
               </Link>
             </li>
