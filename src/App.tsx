@@ -12,12 +12,12 @@ import {
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
 import { useEffect } from "react";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import LatestNewsPage from "./pages/LatestNewsPage";
 // import PostPage from "./pages/PostPage";
 import CategoryPage from "./pages/CategoryPage";
 import PostPage from "./pages/PostPage";
+import DashboardLayout from "./layouts/DashboardLayout";
+import NotFound from "./pages/NotFound";
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isAuth, accessToken } = useSelector<RootState, RootState["auth"]>(
@@ -44,26 +44,35 @@ const App = () => {
   }, [isAuth, dispatch]);
 
   return (
-    <AppLayout>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        {/* <Route path="/:postSlug" element={<PostPage />} /> */}
-        <Route index path="/:catSlug" element={<CategoryPage />} />
-        <Route path="/:catSlug/:postSlug" element={<PostPage />} />
+    <Routes>
+      <Route path="/" element={<AppLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path="category/:catSlug" element={<CategoryPage />} />
+        <Route path="category/:catSlug/:postSlug" element={<PostPage />} />
+        <Route path="latest" element={<LatestNewsPage />} />
+      </Route>
 
-        <Route path="/latest" element={<LatestNewsPage />} />
+      {/* AUTH  */}
+      <Route
+        path="/sign-in"
+        element={isAuth ? <Navigate to="/" /> : <SignInPage />}
+      />
+      <Route
+        path="/sign-up"
+        element={isAuth ? <Navigate to="/" /> : <SignUpPage />}
+      />
 
-        <Route
-          path="/sign-in"
-          element={isAuth ? <Navigate to="/" /> : <SignInPage />}
-        />
-        <Route
-          path="/sign-up"
-          element={isAuth ? <Navigate to="/" /> : <SignUpPage />}
-        />
-      </Routes>
-      <ToastContainer closeOnClick hideProgressBar theme="colored" />
-    </AppLayout>
+      {/* Dashboard */}
+      <Route
+        path="/dashboard"
+        element={isAuth ? <DashboardLayout /> : <Navigate to="/sign-in" />}
+      >
+        <Route index element={<p>Dashboard homepage</p>} />
+      </Route>
+
+      {/* NOT FOUND */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 };
 

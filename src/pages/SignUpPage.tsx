@@ -58,11 +58,9 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="container my-10 flex w-full items-center justify-center md:max-w-6xl">
-      <div className="w-full rounded bg-background p-5 shadow-2xl md:w-1/2">
-        <h2 className="mb-5 font-mono text-2xl font-bold tracking-tight">
-          Sign Up
-        </h2>
+    <div className="flex h-screen w-full items-center justify-center">
+      <div className="container max-w-md rounded bg-background p-5 shadow-2xl">
+        <h2 className="mb-5 text-2xl font-bold tracking-tight">Sign Up</h2>
 
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div>

@@ -26,7 +26,7 @@ const PostPage = () => {
     return <SkeletonPostPage />;
   } else {
     return (
-      <div className="container my-10 max-w-6xl text-start">
+      <div className="container my-10 max-w-4xl text-start">
         <h1 className="mb-5  font-mono text-2xl font-bold">{post?.title}</h1>
         <div className="mb-5 text-sm text-muted-foreground">
           3 March 2024, John Doe

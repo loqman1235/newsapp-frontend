@@ -29,7 +29,7 @@ const CategoryPage = () => {
                   key={post.id}
                   mode="large"
                   {...post}
-                  url={`/${catSlug}/${post.slug}`}
+                  url={`/category/${catSlug}/${post.slug}`}
                 />
               ))}
         </Section>

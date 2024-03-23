@@ -22,7 +22,7 @@ const LatestPostsSection = () => {
                 key={post.id}
                 mode={i > 2 ? "small" : "large"}
                 {...post}
-                url={`/${post.categories[0].slug}/${post.slug}`}
+                url={`/category/${post.categories[0].slug}/${post.slug}`}
               />
             ))}
       </Section>

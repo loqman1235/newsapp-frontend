@@ -3,7 +3,7 @@ import { Skeleton } from "../ui/skeleton";
 
 const SkeletonPostPage = () => {
   return (
-    <div className="container my-10 max-w-6xl text-start">
+    <div className="container my-10 max-w-4xl text-start">
       <h1 className="mb-5  font-mono text-2xl font-bold">
         <Skeleton className="h-4 w-[80%]" />
       </h1>

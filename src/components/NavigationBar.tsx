@@ -47,7 +47,7 @@ const NavigationBar = () => {
                       className={({ isActive }) =>
                         isActive ? "font-bold text-foreground" : ""
                       }
-                      to={`${cat.slug}`}
+                      to={`/category/${cat.slug}`}
                     >
                       {cat.name}
                     </NavLink>
@@ -79,7 +79,7 @@ const NavigationBar = () => {
                               ? "font-bold text-foreground"
                               : "text-muted-foreground transition hover:text-foreground"
                           }
-                          to={`${cat.slug}`}
+                          to={`/category/${cat.slug}`}
                         >
                           {cat.name}
                         </NavLink>
@@ -135,7 +135,7 @@ const NavigationBar = () => {
                     className={({ isActive }) =>
                       isActive ? "font-bold text-foreground" : ""
                     }
-                    to={`${cat.slug}`}
+                    to={`/category/${cat.slug}`}
                   >
                     {cat.name}
                   </NavLink>
