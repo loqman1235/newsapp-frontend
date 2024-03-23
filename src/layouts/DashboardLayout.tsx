@@ -1,10 +1,13 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
+import DashboardSidebar from "@/components/admin/Sidebar";
 
 const DashboardLayout = () => {
   return (
-    <div>
-      <Outlet />
+    <div className="font-poppins">
+      <DashboardSidebar />
+      <main>
+        <Outlet />
+      </main>
     </div>
   );
 };

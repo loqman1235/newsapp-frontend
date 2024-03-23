@@ -75,6 +75,7 @@ module.exports = {
       fontFamily: {
         sans: ["var(--font-sans)", "Roboto"],
         mono: ["var(--font-mono)", "Playfair Display"],
+        poppins: ["var(--font-poppins)", "Poppins"],
       },
     },
   },
