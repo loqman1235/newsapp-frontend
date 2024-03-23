@@ -1,8 +1,6 @@
+import { useEffect } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import HomePage from "@/pages/HomePage";
-import AppLayout from "./layouts/AppLayout";
-import SignInPage from "@/pages/SignInPage";
-import SignUpPage from "./pages/SignUpPage";
+
 import { RootState } from "@/app/store";
 import { useSelector } from "react-redux";
 import {
@@ -11,13 +9,23 @@ import {
 } from "./features/auth/authThunks";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
-import { useEffect } from "react";
-import LatestNewsPage from "./pages/LatestNewsPage";
-// import PostPage from "./pages/PostPage";
-import CategoryPage from "./pages/CategoryPage";
-import PostPage from "./pages/PostPage";
+
+// LAYOUTS IMPORT
+import AppLayout from "./layouts/AppLayout";
 import DashboardLayout from "./layouts/DashboardLayout";
-import NotFound from "./pages/NotFound";
+
+// PAGES IMPORT
+import {
+  HomePage,
+  PostPage,
+  SignInPage,
+  SignUpPage,
+  NotFound,
+  LatestNewsPage,
+  CategoryPage,
+  DashboardHomePage,
+} from "@/pages";
+
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isAuth, accessToken } = useSelector<RootState, RootState["auth"]>(
@@ -67,7 +75,7 @@ const App = () => {
         path="/dashboard"
         element={isAuth ? <DashboardLayout /> : <Navigate to="/sign-in" />}
       >
-        <Route index element={<p>Dashboard homepage</p>} />
+        <Route index element={<DashboardHomePage />} />
       </Route>
 
       {/* NOT FOUND */}
