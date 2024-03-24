@@ -1,16 +1,20 @@
 import { Link } from "react-router-dom";
 import NavigationMenu from "./NavigationMenu";
+import { Crown } from "lucide-react";
 
 const Sidebar = () => {
   return (
-    <aside className="fixed left-0 top-0 h-screen w-56 bg-foreground text-muted-foreground">
+    <aside className="fixed left-0 top-0 h-screen w-16 bg-foreground text-muted-foreground md:w-56">
       {/* BRAND */}
       <div className="flex h-16 w-full items-center px-5">
         <Link
           to="/dashboard"
-          className="text-xl font-bold tracking-tight text-background"
+          className="flex items-center gap-5 text-xl font-bold tracking-tight text-background"
         >
-          News<span className="text-teal-300">App.</span>
+          <span className="block md:hidden">
+            <Crown />
+          </span>
+          <span className="hidden md:block">NewsApp.</span>
         </Link>
       </div>
 

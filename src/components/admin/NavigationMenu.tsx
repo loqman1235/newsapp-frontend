@@ -20,7 +20,7 @@ const NavigationMenu = () => {
           <span>
             <LayoutDashboard className="h-5 w-5" />
           </span>
-          <span>Dashboard</span>
+          <span className="hidden md:block">Dashboard</span>
         </Link>
       </li>
 
@@ -31,14 +31,14 @@ const NavigationMenu = () => {
             <span>
               <Newspaper className="h-5 w-5" />
             </span>
-            <span>Articles</span>
+            <span className="hidden md:block">Articles</span>
           </div>
-          <button className="transition duration-300 group-hover:rotate-180">
+          <button className="hidden transition duration-300 group-hover:rotate-180 md:block">
             <ChevronDown className="h-5 w-5" />
           </button>
         </Link>
 
-        <ul className="flex max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-500 ease-in-out group-hover:max-h-[200px]">
+        <ul className="hidden max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-500 ease-in-out group-hover:max-h-[200px] md:flex">
           <li>
             <Link to="/dashboard" className={`${navLinkStyles} pl-[60px]`}>
               All
@@ -75,14 +75,14 @@ const NavigationMenu = () => {
             <span>
               <LayoutList className="h-5 w-5" />
             </span>
-            <span>Categories</span>
+            <span className="hidden md:block">Categories</span>
           </div>
-          <button className="transition duration-300 group-hover:rotate-180">
+          <button className="hidden transition duration-300 group-hover:rotate-180 md:block">
             <ChevronDown className="h-5 w-5" />
           </button>
         </Link>
 
-        <ul className="flex max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-500 ease-in-out group-hover:max-h-[200px]">
+        <ul className="hidden max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-500 ease-in-out group-hover:max-h-[200px] md:flex">
           <li>
             <Link to="/dashboard" className={`${navLinkStyles} pl-[60px]`}>
               All
@@ -113,14 +113,14 @@ const NavigationMenu = () => {
             <span>
               <Users className="h-5 w-5" />
             </span>
-            <span>Users</span>
+            <span className="hidden md:block">Users</span>
           </div>
-          <button className="transition duration-300 group-hover:rotate-180">
+          <button className="hidden transition duration-300 group-hover:rotate-180 md:block">
             <ChevronDown className="h-5 w-5" />
           </button>
         </Link>
 
-        <ul className="flex max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-500 ease-in-out group-hover:max-h-[200px]">
+        <ul className="hidden max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-500 ease-in-out group-hover:max-h-[200px] md:flex">
           <li>
             <Link to="/dashboard" className={`${navLinkStyles} pl-[60px]`}>
               All
@@ -150,7 +150,7 @@ const NavigationMenu = () => {
           <span>
             <Settings className="h-5 w-5" />
           </span>
-          <span>Settings</span>
+          <span className="hidden md:block">Settings</span>
         </Link>
       </li>
 
@@ -161,7 +161,7 @@ const NavigationMenu = () => {
           <span>
             <LogOut className="h-5 w-5" />
           </span>
-          <span>Sign Out</span>
+          <span className="hidden md:block">Sign Out</span>
         </Link>
       </li>
     </ul>
