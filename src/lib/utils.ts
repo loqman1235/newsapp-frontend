@@ -21,3 +21,19 @@ export function getItemFromLocalStorage(key: string) {
   const item = localStorage.getItem(key);
   return item ? JSON.parse(item) : null;
 }
+
+export function isActiveLink(currentPath: string, linkPath: string) {
+  // Check if the current path matches the link path exactly
+  if (currentPath === linkPath) {
+    return true;
+  }
+
+  // For the dashboard specifically, handle nested routes dynamically
+  if (linkPath === "/dashboard" && currentPath.startsWith("/dashboard")) {
+    // Adjust the logic if you have a more complex structure
+    // This checks if it's exactly "/dashboard" or a subpath of it
+    return currentPath.split("/").length === 3;
+  }
+
+  return false;
+}

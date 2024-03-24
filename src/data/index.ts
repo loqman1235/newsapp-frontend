@@ -38,3 +38,37 @@ export const heroSectionNewsData = [
       "https://ichef.bbci.co.uk/news/976/cpsprodpb/122E0/production/_132746447_gettyimages-1299543321-1.jpg.webp",
   },
 ] as const;
+
+export type Article = {
+  id: number;
+  title: string;
+  status: "published" | "draft";
+  createdAt?: string;
+};
+
+export const articlesData: Article[] = [
+  {
+    id: 1,
+    title: "Article 1",
+    status: "published",
+    createdAt: "2022-01-01",
+  },
+  {
+    id: 2,
+    title: "Article 2",
+    status: "draft",
+    createdAt: "2022-01-02",
+  },
+  {
+    id: 3,
+    title: "Article 3",
+    status: "draft",
+    createdAt: "2022-01-03",
+  },
+  {
+    id: 4,
+    title: "Article 4",
+    status: "published",
+    createdAt: "2022-01-04",
+  },
+];

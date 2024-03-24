@@ -6,3 +6,5 @@ export { default as LatestNewsPage } from "./LatestNewsPage";
 export { default as SignInPage } from "./SignInPage";
 export { default as SignUpPage } from "./SignUpPage";
 export { default as DashboardHomePage } from "./dashboard/Homepage";
+export { default as DashboardArticlesPage } from "./dashboard/ArticlesPage";
+export { default as DashboardCreatePostPage } from "./dashboard/CreatePostPage";
