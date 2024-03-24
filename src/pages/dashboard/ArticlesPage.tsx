@@ -42,7 +42,13 @@ const columns = [
       //   const articleId = info.getValue().id;
       return (
         <div className="flex flex-row space-x-2">
-          <Button variant="default" size="sm">
+          <Button
+            variant="default"
+            size="sm"
+            onClick={() => {
+              console.log("clicked");
+            }}
+          >
             <Pencil className="h-4 w-4" />
           </Button>
           <Button variant="destructive" size="sm">
