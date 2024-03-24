@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
   ChevronDown,
   LayoutDashboard,
@@ -12,20 +12,32 @@ import {
 const NavigationMenu = () => {
   const navLinkStyles =
     "flex items-center gap-5 px-5 py-3 transition duration-300 hover:bg-accent-foreground hover:text-background font-medium";
+  const activeLinkStyles =
+    "flex items-center gap-5 px-5 py-3 transition duration-300 bg-accent-foreground text-background";
   return (
     <ul className="flex h-[calc(100vh-4rem)] w-full flex-col">
       <li>
-        <Link to="/dashboard" className={navLinkStyles}>
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) =>
+            isActive ? activeLinkStyles : navLinkStyles
+          }
+        >
           {" "}
           <span>
             <LayoutDashboard className="h-5 w-5" />
           </span>
           <span className="hidden md:block">Dashboard</span>
-        </Link>
+        </NavLink>
       </li>
 
       <li className="group">
-        <Link to="/dashboard" className={navLinkStyles}>
+        <NavLink
+          to="/articles"
+          className={({ isActive }) =>
+            isActive ? activeLinkStyles : navLinkStyles
+          }
+        >
           {" "}
           <div className="flex w-full items-center gap-5">
             <span>
@@ -36,7 +48,7 @@ const NavigationMenu = () => {
           <button className="hidden transition duration-300 group-hover:rotate-180 md:block">
             <ChevronDown className="h-5 w-5" />
           </button>
-        </Link>
+        </NavLink>
 
         <ul className="hidden max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-500 ease-in-out group-hover:max-h-[200px] md:flex">
           <li>
@@ -69,7 +81,12 @@ const NavigationMenu = () => {
       </li>
 
       <li className="group">
-        <Link to="/dashboard" className={navLinkStyles}>
+        <NavLink
+          to="/cats"
+          className={({ isActive }) =>
+            isActive ? activeLinkStyles : navLinkStyles
+          }
+        >
           {" "}
           <div className="flex w-full items-center gap-5">
             <span>
@@ -80,7 +97,7 @@ const NavigationMenu = () => {
           <button className="hidden transition duration-300 group-hover:rotate-180 md:block">
             <ChevronDown className="h-5 w-5" />
           </button>
-        </Link>
+        </NavLink>
 
         <ul className="hidden max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-500 ease-in-out group-hover:max-h-[200px] md:flex">
           <li>
@@ -107,7 +124,12 @@ const NavigationMenu = () => {
       </li>
 
       <li className="group">
-        <Link to="/dashboard" className={navLinkStyles}>
+        <NavLink
+          to="/users"
+          className={({ isActive }) =>
+            isActive ? activeLinkStyles : navLinkStyles
+          }
+        >
           {" "}
           <div className="flex w-full items-center gap-5">
             <span>
@@ -118,7 +140,7 @@ const NavigationMenu = () => {
           <button className="hidden transition duration-300 group-hover:rotate-180 md:block">
             <ChevronDown className="h-5 w-5" />
           </button>
-        </Link>
+        </NavLink>
 
         <ul className="hidden max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-500 ease-in-out group-hover:max-h-[200px] md:flex">
           <li>
@@ -145,13 +167,18 @@ const NavigationMenu = () => {
       </li>
 
       <li>
-        <Link to="/dashboard" className={navLinkStyles}>
+        <NavLink
+          to="/settings"
+          className={({ isActive }) =>
+            isActive ? activeLinkStyles : navLinkStyles
+          }
+        >
           {" "}
           <span>
             <Settings className="h-5 w-5" />
           </span>
           <span className="hidden md:block">Settings</span>
-        </Link>
+        </NavLink>
       </li>
 
       {/* LOGOUT */}
