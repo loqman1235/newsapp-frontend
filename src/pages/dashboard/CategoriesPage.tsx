@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-material.css";
 import { Pencil, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { ICategory } from "@/types";
 import useFetch from "@/hooks/useFetch";
 import { format } from "date-fns";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-material.css";
 
 const CategoriesPage = () => {
   const { data: categoriesResult, isLoading } = useFetch("/cats");
@@ -94,6 +94,9 @@ const CategoriesPage = () => {
           rowData={rowData}
           columnDefs={columnDefs}
           domLayout="autoHeight"
+          localeText={{ noRowsToShow: "No categories found" }}
+          pagination={true}
+          paginationPageSize={20}
         />
       </div>
     </div>
