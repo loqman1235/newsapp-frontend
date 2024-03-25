@@ -11,9 +11,9 @@ import {
 
 const NavigationMenu = () => {
   const navLinkStyles =
-    "flex items-center gap-5 px-5 py-3 transition duration-300 hover:bg-accent-foreground hover:text-background font-medium";
+    "flex items-center gap-5 px-5 py-3 transition duration-700 hover:bg-accent-foreground hover:text-background font-medium";
   // const activeLinkStyles =
-  //   "flex items-center gap-5 px-5 py-3 transition duration-300 bg-accent-foreground text-background";
+  //   "flex items-center gap-5 px-5 py-3 transition duration-700 bg-accent-foreground text-background";
   return (
     <ul className="flex h-[calc(100vh-4rem)] w-full flex-col">
       <li>
