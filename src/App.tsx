@@ -28,6 +28,7 @@ import {
   DashboardArticlesPage,
   DashboardCategoriesPage,
   DashboardCreateCatPage,
+  DashboardEditCatPage,
 } from "@/pages";
 
 const App = () => {
@@ -84,6 +85,10 @@ const App = () => {
         <Route path="categories" element={<DashboardCategoriesPage />} />
         <Route path="articles/create" element={<DashboardCreatePostPage />} />
         <Route path="categories/create" element={<DashboardCreateCatPage />} />
+        <Route
+          path="categories/edit/:catId"
+          element={<DashboardEditCatPage />}
+        />
       </Route>
 
       {/* NOT FOUND */}

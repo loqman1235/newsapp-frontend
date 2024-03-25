@@ -9,12 +9,56 @@ import useFetch from "@/hooks/useFetch";
 import { format } from "date-fns";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
+import { ClipLoader } from "react-spinners";
+import api from "@/services/api";
+import { AxiosError } from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { toast } from "react-toastify";
 
 const CategoriesPage = () => {
+  const { accessToken } = useSelector<RootState, RootState["auth"]>(
+    (state) => state.auth,
+  );
   const { data: categoriesResult, isLoading } = useFetch("/cats");
   const [rowData, setRowData] = useState<ICategory[]>(
     isLoading ? [] : categoriesResult.categories,
   );
+
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await api.delete(`/cats/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (res.status === 200) {
+        setRowData((prev) => prev.filter((cat) => cat.id !== id));
+        console.log("deleted");
+        // toast success
+        toast.success("Category deleted successfully");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+        console.log(error.response?.data.message);
+      }
+
+      console.log(error);
+    }
+  };
 
   const [columnDefs] = useState<ColDef[]>([
     {
@@ -61,18 +105,40 @@ const CategoriesPage = () => {
       cellRenderer: (props: { node: { data: ICategory } }) => (
         <div className="flex items-center justify-center gap-1">
           <Link
-            onClick={() => console.log(props.node.data.id)}
             className="flex items-center justify-center bg-foreground p-2 text-background"
-            to={`/dashboard/articles/${props.node.data.id}`}
+            to={`/dashboard/categories/edit/${props.node.data.id}`}
           >
             <Pencil className="h-4 w-4" />
           </Link>
-          <button
-            onClick={() => console.log(props.node.data.id)}
-            className="flex items-center justify-center bg-red-600 p-2 text-background"
-          >
-            <Trash2 className="h-4 w-4" />
-          </button>
+
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button
+                onClick={() => console.log(props.node.data.id)}
+                className="flex items-center justify-center bg-red-600 p-2 text-background"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete the
+                  category.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => handleDelete(props.node.data.id)}
+                  className="bg-red-600"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       ),
       cellStyle: { display: "flex" },
@@ -85,6 +151,14 @@ const CategoriesPage = () => {
       setRowData(categoriesResult.categories);
     }
   }, [categoriesResult, isLoading]);
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <ClipLoader className="text-foreground" />
+      </div>
+    );
+  }
 
   return (
     <div>

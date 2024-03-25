@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ChevronDown,
   LayoutDashboard,
@@ -8,8 +8,46 @@ import {
   Settings,
   Users,
 } from "lucide-react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/store";
+import { logoutAsync } from "@/features/auth/authThunks";
 
 const NavigationMenu = () => {
+  const { accessToken } = useSelector<RootState, RootState["auth"]>(
+    (state) => state.auth,
+  );
+  const [articlesSubmenuOpen, setArticlesSubmenuOpen] = useState(false);
+  const [usersSubmenuOpen, setUsersSubmenuOpen] = useState(false);
+  const [categoriesSubmenuOpen, setCategoriesSubmenuOpen] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
+  const toggleArticlesSubmenu = () => {
+    setArticlesSubmenuOpen(!articlesSubmenuOpen);
+  };
+
+  const toggleUsersSubmenu = () => {
+    setUsersSubmenuOpen(!usersSubmenuOpen);
+  };
+
+  const toggleCategoriesSubmenu = () => {
+    setCategoriesSubmenuOpen(!categoriesSubmenuOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      if (accessToken) {
+        const response = await dispatch(logoutAsync({ accessToken })).unwrap();
+        if (response) {
+          navigate("/sign-in");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const navLinkStyles =
     "flex items-center gap-5 px-5 py-3 transition duration-700 hover:bg-accent-foreground hover:text-background font-medium";
   // const activeLinkStyles =
@@ -26,7 +64,7 @@ const NavigationMenu = () => {
         </Link>
       </li>
 
-      <li className="group">
+      <li className="group" onClick={toggleArticlesSubmenu}>
         <Link to="/dashboard/articles" className={navLinkStyles}>
           {" "}
           <div className="flex w-full items-center gap-5">
@@ -35,12 +73,17 @@ const NavigationMenu = () => {
             </span>
             <span className="hidden md:block">Articles</span>
           </div>
-          <button className="hidden transition duration-300 group-hover:rotate-180 md:block">
+          <button
+            className={`hidden transition duration-300 md:block ${articlesSubmenuOpen && "rotate-180"}`}
+          >
             <ChevronDown className="h-5 w-5" />
           </button>
         </Link>
 
-        <ul className="hidden max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-500 ease-in-out group-hover:max-h-[200px] md:flex">
+        <ul
+          onClick={(e) => e.stopPropagation()}
+          className={`hidden max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-300 ease-in-out md:flex ${articlesSubmenuOpen && "max-h-96"}`}
+        >
           <li>
             <Link to="/dashboard" className={`${navLinkStyles} pl-[60px]`}>
               All
@@ -70,7 +113,7 @@ const NavigationMenu = () => {
         </ul>
       </li>
 
-      <li className="group">
+      <li className="group" onClick={toggleCategoriesSubmenu}>
         <Link to="/dashboard/categories" className={navLinkStyles}>
           {" "}
           <div className="flex w-full items-center gap-5">
@@ -79,12 +122,17 @@ const NavigationMenu = () => {
             </span>
             <span className="hidden md:block">Categories</span>
           </div>
-          <button className="hidden transition duration-300 group-hover:rotate-180 md:block">
+          <button
+            className={`hidden transition duration-300 md:block ${categoriesSubmenuOpen && "rotate-180"}`}
+          >
             <ChevronDown className="h-5 w-5" />
           </button>
         </Link>
 
-        <ul className="hidden max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-500 ease-in-out group-hover:max-h-[200px] md:flex">
+        <ul
+          onClick={(e) => e.stopPropagation()}
+          className={`hidden max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-300 ease-in-out md:flex ${categoriesSubmenuOpen && "max-h-96"}`}
+        >
           <li>
             <Link
               to="/dashboard/categories"
@@ -114,7 +162,7 @@ const NavigationMenu = () => {
         </ul>
       </li>
 
-      <li className="group">
+      <li className="group" onClick={toggleUsersSubmenu}>
         <Link to="/users" className={navLinkStyles}>
           {" "}
           <div className="flex w-full items-center gap-5">
@@ -123,12 +171,17 @@ const NavigationMenu = () => {
             </span>
             <span className="hidden md:block">Users</span>
           </div>
-          <button className="hidden transition duration-300 group-hover:rotate-180 md:block">
+          <button
+            className={`hidden transition duration-300 md:block ${usersSubmenuOpen && "rotate-180"}`}
+          >
             <ChevronDown className="h-5 w-5" />
           </button>
         </Link>
 
-        <ul className="hidden max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-500 ease-in-out group-hover:max-h-[200px] md:flex">
+        <ul
+          onClick={(e) => e.stopPropagation()}
+          className={`hidden max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-300 ease-in-out md:flex ${usersSubmenuOpen && "max-h-96"}`}
+        >
           <li>
             <Link to="/dashboard" className={`${navLinkStyles} pl-[60px]`}>
               All
@@ -164,13 +217,13 @@ const NavigationMenu = () => {
 
       {/* LOGOUT */}
       <li className="mt-auto">
-        <Link to="/dashboard" className={navLinkStyles}>
+        <button onClick={handleLogout} className={`w-full ${navLinkStyles}`}>
           {" "}
           <span>
             <LogOut className="h-5 w-5" />
           </span>
           <span className="hidden md:block">Sign Out</span>
-        </Link>
+        </button>
       </li>
     </ul>
   );

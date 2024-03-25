@@ -10,3 +10,4 @@ export { default as DashboardArticlesPage } from "./dashboard/ArticlesPage";
 export { default as DashboardCreatePostPage } from "./dashboard/CreatePostPage";
 export { default as DashboardCategoriesPage } from "./dashboard/CategoriesPage";
 export { default as DashboardCreateCatPage } from "./dashboard/CreateCatPage";
+export { default as DashboardEditCatPage } from "./dashboard/EditCatPage";

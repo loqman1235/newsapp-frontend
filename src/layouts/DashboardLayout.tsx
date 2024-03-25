@@ -11,7 +11,12 @@ const DashboardLayout = () => {
         <Outlet />
       </main>
 
-      <ToastContainer closeOnClick hideProgressBar theme="colored" />
+      <ToastContainer
+        closeOnClick
+        hideProgressBar
+        theme="colored"
+        className="z-50"
+      />
     </div>
   );
 };

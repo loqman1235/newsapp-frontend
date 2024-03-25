@@ -29,6 +29,7 @@ const CreateCatPage = () => {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = useForm<CreateCatFormType>({
     resolver: zodResolver(CreateCatSchema),
@@ -55,7 +56,11 @@ const CreateCatPage = () => {
       console.log(res);
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log(error.response?.data.message);
+        console.log(error.response?.data?.details[0]?.message);
+        setError("name", {
+          type: "custom",
+          message: error.response?.data?.details[0]?.message,
+        });
       }
 
       console.log(error);
