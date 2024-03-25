@@ -27,6 +27,7 @@ import {
   DashboardCreatePostPage,
   DashboardArticlesPage,
   DashboardCategoriesPage,
+  DashboardCreateCatPage,
 } from "@/pages";
 
 const App = () => {
@@ -79,9 +80,10 @@ const App = () => {
         element={isAuth ? <DashboardLayout /> : <Navigate to="/sign-in" />}
       >
         <Route index element={<DashboardHomePage />} />
-        <Route path="dashboard/create" element={<DashboardCreatePostPage />} />
         <Route path="articles" element={<DashboardArticlesPage />} />
         <Route path="categories" element={<DashboardCategoriesPage />} />
+        <Route path="articles/create" element={<DashboardCreatePostPage />} />
+        <Route path="categories/create" element={<DashboardCreateCatPage />} />
       </Route>
 
       {/* NOT FOUND */}

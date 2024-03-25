@@ -56,7 +56,7 @@ const NavigationMenu = () => {
           </li>
           <li>
             <Link
-              to="/dashboard/create"
+              to="/dashboard/articles/create"
               className={`${navLinkStyles} pl-[60px]`}
             >
               Create
@@ -86,7 +86,10 @@ const NavigationMenu = () => {
 
         <ul className="hidden max-h-0 flex-col gap-1 overflow-hidden text-sm text-muted-foreground transition-all duration-500 ease-in-out group-hover:max-h-[200px] md:flex">
           <li>
-            <Link to="/dashboard" className={`${navLinkStyles} pl-[60px]`}>
+            <Link
+              to="/dashboard/categories"
+              className={`${navLinkStyles} pl-[60px]`}
+            >
               All
             </Link>
           </li>
@@ -96,7 +99,10 @@ const NavigationMenu = () => {
             </Link>
           </li>
           <li>
-            <Link to="/dashboard" className={`${navLinkStyles} pl-[60px]`}>
+            <Link
+              to="/dashboard/categories/create"
+              className={`${navLinkStyles} pl-[60px]`}
+            >
               Create
             </Link>
           </li>
