@@ -8,3 +8,4 @@ export { default as SignUpPage } from "./SignUpPage";
 export { default as DashboardHomePage } from "./dashboard/Homepage";
 export { default as DashboardArticlesPage } from "./dashboard/ArticlesPage";
 export { default as DashboardCreatePostPage } from "./dashboard/CreatePostPage";
+export { default as DashboardCategoriesPage } from "./dashboard/CategoriesPage";

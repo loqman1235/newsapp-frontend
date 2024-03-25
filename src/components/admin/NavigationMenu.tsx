@@ -71,7 +71,7 @@ const NavigationMenu = () => {
       </li>
 
       <li className="group">
-        <Link to="/cats" className={navLinkStyles}>
+        <Link to="/dashboard/categories" className={navLinkStyles}>
           {" "}
           <div className="flex w-full items-center gap-5">
             <span>

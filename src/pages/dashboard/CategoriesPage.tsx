@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Article, articlesData } from "@/data";
+import { useEffect, useState } from "react";
 import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
@@ -7,9 +6,16 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import { Pencil, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
+import { ICategory } from "@/types";
+import useFetch from "@/hooks/useFetch";
+import { format } from "date-fns";
 
-const ArticlesPage = () => {
-  const [rowData] = useState<Article[]>(articlesData);
+const CategoriesPage = () => {
+  const { data: categoriesResult, isLoading } = useFetch("/cats");
+  const [rowData, setRowData] = useState<ICategory[]>(
+    isLoading ? [] : categoriesResult.categories,
+  );
+
   const [columnDefs] = useState<ColDef[]>([
     {
       headerName: "#",
@@ -17,8 +23,8 @@ const ArticlesPage = () => {
       flex: 1,
     },
     {
-      headerName: "TITLE",
-      field: "title",
+      headerName: "NAME",
+      field: "name",
       flex: 2,
     },
 
@@ -26,13 +32,16 @@ const ArticlesPage = () => {
       headerName: "CREATED AT",
       field: "createdAt",
       flex: 2,
+
+      valueFormatter: (params: { value: string }) =>
+        format(new Date(params.value), "dd MMM yyyy HH:mm a"),
     },
     {
       headerName: "STATUS",
       field: "status",
       flex: 2,
 
-      cellRenderer: (params: { data: Article }) => (
+      cellRenderer: (params: { data: ICategory }) => (
         <div className="flex items-center justify-center gap-1">
           <Badge
             variant={
@@ -49,7 +58,7 @@ const ArticlesPage = () => {
       headerName: "ACTIONS",
       // field: "action",
       flex: 2,
-      cellRenderer: (props: { node: { data: Article } }) => (
+      cellRenderer: (props: { node: { data: ICategory } }) => (
         <div className="flex items-center justify-center gap-1">
           <Link
             onClick={() => console.log(props.node.data.id)}
@@ -69,9 +78,17 @@ const ArticlesPage = () => {
       cellStyle: { display: "flex" },
     },
   ]);
+
+  // Update rowData when categoriesResult changes
+  useEffect(() => {
+    if (!isLoading) {
+      setRowData(categoriesResult.categories);
+    }
+  }, [categoriesResult, isLoading]);
+
   return (
     <div>
-      <h2 className="mb-2 text-2xl font-bold tracking-tight">Articles</h2>
+      <h2 className="mb-2 text-2xl font-bold tracking-tight">Categories</h2>
       <div className="ag-theme-material">
         <AgGridReact
           rowData={rowData}
@@ -83,4 +100,4 @@ const ArticlesPage = () => {
   );
 };
 
-export default ArticlesPage;
+export default CategoriesPage;
