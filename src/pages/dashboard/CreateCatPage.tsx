@@ -6,6 +6,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { z } from "zod";
+import api from "@/services/api";
+import { AxiosError } from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { useNavigate } from "react-router-dom";
 
 const CreateCatSchema = z.object({
   name: z
@@ -19,17 +24,42 @@ const CreateCatSchema = z.object({
 type CreateCatFormType = z.infer<typeof CreateCatSchema>;
 
 const CreateCatPage = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    // reset,
+    reset,
     formState: { errors },
   } = useForm<CreateCatFormType>({
     resolver: zodResolver(CreateCatSchema),
   });
 
+  const { accessToken } = useSelector<RootState, RootState["auth"]>(
+    (state) => state.auth,
+  );
+
   const onSubmit: SubmitHandler<CreateCatFormType> = async (data) => {
-    console.log(data);
+    console.log(typeof data.name);
+    try {
+      const res = await api.post("/cats", data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (res.status === 201) {
+        console.log(res);
+        reset();
+        navigate("/dashboard/categories");
+      }
+      console.log(res);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data.message);
+      }
+
+      console.log(error);
+    }
   };
 
   return (
