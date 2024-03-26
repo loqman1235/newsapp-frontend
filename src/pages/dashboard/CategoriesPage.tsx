@@ -151,7 +151,7 @@ const CategoriesPage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
+      <div className="flex h-screen w-full items-center justify-center overflow-hidden">
         <ClipLoader className="text-foreground" />
       </div>
     );
