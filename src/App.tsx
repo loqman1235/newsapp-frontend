@@ -86,7 +86,7 @@ const App = () => {
         <Route path="articles/create" element={<DashboardCreatePostPage />} />
         <Route path="categories/create" element={<DashboardCreateCatPage />} />
         <Route
-          path="categories/edit/:catId"
+          path="categories/edit/:catSlug"
           element={<DashboardEditCatPage />}
         />
       </Route>

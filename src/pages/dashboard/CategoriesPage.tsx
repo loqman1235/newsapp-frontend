@@ -82,21 +82,18 @@ const CategoriesPage = () => {
     },
     {
       headerName: "STATUS",
-      field: "status",
+      field: "published",
       flex: 2,
 
       cellRenderer: (params: { data: ICategory }) => (
         <div className="flex items-center justify-center gap-1">
-          <Badge
-            variant={
-              params.data.status === "published" ? "default" : "secondary"
-            }
-          >
-            {params.data.status === "published" ? "Published" : "Draft"}
+          <Badge variant={params.data.published ? "default" : "secondary"}>
+            {params.data.published ? "Public" : "Draft"}
           </Badge>
         </div>
       ),
       cellStyle: { display: "flex" },
+      // sort by boolean
     },
     {
       headerName: "ACTIONS",
@@ -106,7 +103,7 @@ const CategoriesPage = () => {
         <div className="flex items-center justify-center gap-1">
           <Link
             className="flex items-center justify-center bg-foreground p-2 text-background"
-            to={`/dashboard/categories/edit/${props.node.data.id}`}
+            to={`/dashboard/categories/edit/${props.node.data.slug}`}
           >
             <Pencil className="h-4 w-4" />
           </Link>

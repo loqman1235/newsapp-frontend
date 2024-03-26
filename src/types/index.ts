@@ -2,7 +2,7 @@ export interface ICategory {
   id: string;
   name: string;
   slug: string;
-  status: "published" | "draft";
+  published: boolean;
   posts?: IPost[];
 }
 

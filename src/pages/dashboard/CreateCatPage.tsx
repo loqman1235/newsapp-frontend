@@ -11,6 +11,7 @@ import { AxiosError } from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 const CreateCatSchema = z.object({
   name: z
@@ -30,7 +31,7 @@ const CreateCatPage = () => {
     handleSubmit,
     reset,
     setError,
-    formState: { errors },
+    formState: { errors, isSubmitted },
   } = useForm<CreateCatFormType>({
     resolver: zodResolver(CreateCatSchema),
   });
@@ -94,9 +95,17 @@ const CreateCatPage = () => {
             type="submit"
             variant="default"
             size="lg"
-            className="w-full text-lg"
+            className="flex w-full items-center justify-center gap-2 text-lg"
+            disabled={isSubmitted}
           >
-            Add
+            {isSubmitted ? (
+              <>
+                <ClipLoader color="rgba(255, 255, 255, 0.5)" size={20} />
+                <span>Adding...</span>
+              </>
+            ) : (
+              "Add"
+            )}
           </Button>
         </form>
       </div>
