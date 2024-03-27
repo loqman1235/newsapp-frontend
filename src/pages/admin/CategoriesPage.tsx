@@ -26,6 +26,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "react-toastify";
+import { Button } from "@/components/ui/button";
 
 const CategoriesPage = () => {
   const { accessToken } = useSelector<RootState, RootState["auth"]>(
@@ -159,7 +160,12 @@ const CategoriesPage = () => {
 
   return (
     <div>
-      <h2 className="mb-2 text-2xl font-bold tracking-tight">Categories</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="mb-2 text-2xl font-bold tracking-tight">Categories</h2>
+        <Button variant="default" size={"sm"} className="md:hidden">
+          <Link to="/dashboard/categories/create">Create</Link>
+        </Button>
+      </div>
       <div className="ag-theme-material">
         <AgGridReact
           rowData={rowData}
