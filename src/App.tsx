@@ -24,11 +24,12 @@ import {
   LatestNewsPage,
   CategoryPage,
   DashboardHomePage,
-  DashboardCreatePostPage,
+  DashboardCreateArticlePage,
   DashboardArticlesPage,
   DashboardCategoriesPage,
   DashboardCreateCatPage,
   DashboardEditCatPage,
+  DashboardEditArticle,
 } from "@/pages";
 
 const App = () => {
@@ -83,11 +84,19 @@ const App = () => {
         <Route index element={<DashboardHomePage />} />
         <Route path="articles" element={<DashboardArticlesPage />} />
         <Route path="categories" element={<DashboardCategoriesPage />} />
-        <Route path="articles/create" element={<DashboardCreatePostPage />} />
+        <Route
+          path="articles/create"
+          element={<DashboardCreateArticlePage />}
+        />
         <Route path="categories/create" element={<DashboardCreateCatPage />} />
         <Route
           path="categories/edit/:catSlug"
           element={<DashboardEditCatPage />}
+        />
+
+        <Route
+          path="articles/edit/:artSlug"
+          element={<DashboardEditArticle />}
         />
       </Route>
 

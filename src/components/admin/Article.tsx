@@ -8,7 +8,13 @@ interface IArticle extends IPost {
   isPublished?: boolean;
 }
 
-const Article = ({ title, thumbnail, categories, isPublished }: IArticle) => {
+const Article = ({
+  slug,
+  title,
+  thumbnail,
+  categories,
+  isPublished,
+}: IArticle) => {
   return (
     <div className="w-full bg-background shadow">
       {/* THUMBNAIL */}
@@ -23,7 +29,7 @@ const Article = ({ title, thumbnail, categories, isPublished }: IArticle) => {
           categories.map((cat) => (
             <div
               key={cat.id}
-              className="absolute left-0 top-0 block w-fit select-none  bg-black/80 px-2 py-px text-sm capitalize tracking-wide text-background"
+              className="absolute left-0 top-0 block w-fit select-none bg-black/80 px-2 py-px text-sm capitalize tracking-wide text-background"
             >
               {cat.name}
             </div>
@@ -42,7 +48,7 @@ const Article = ({ title, thumbnail, categories, isPublished }: IArticle) => {
         <div className="flex items-center gap-1">
           <Link
             className="flex items-center justify-center bg-foreground p-2 text-background"
-            to={`/dashboard/articles/edit/1`}
+            to={`/dashboard/articles/edit/${slug}`}
           >
             <Pencil className="h-4 w-4" />
           </Link>
