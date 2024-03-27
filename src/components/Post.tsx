@@ -33,7 +33,7 @@ const Post = ({
               <Link
                 key={category.id}
                 to={`/${categories[0].slug}`}
-                className="absolute left-0 top-0 block w-fit bg-black/80  px-2 py-px text-sm capitalize tracking-wide text-white"
+                className="absolute left-0 top-0 block w-fit bg-black/80  px-2 py-px text-sm capitalize tracking-wide text-background"
               >
                 {category.name}
               </Link>
