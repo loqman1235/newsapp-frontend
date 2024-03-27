@@ -74,8 +74,8 @@ const CreateCatPage = () => {
         Create Category
       </h2>
 
-      <div className="w-1/2 bg-background p-5 shadow">
-        <form className=" space-y-4" onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <form className="w-1/2 space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <Label htmlFor="name">Name</Label>
             <Input

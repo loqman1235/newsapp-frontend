@@ -15,6 +15,14 @@ import { ClipLoader } from "react-spinners";
 import { Textarea } from "@/components/ui/textarea";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { ArrowUpFromLine, Image } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const CreateArticleSchema = z.object({
   title: z
@@ -100,10 +108,15 @@ const CreateArticlePage = () => {
     <div>
       <h2 className="mb-2 text-2xl font-bold tracking-tight">Create Article</h2>
 
-      <div className="w-full bg-background p-5 shadow">
-        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col-reverse items-start gap-5 md:flex-row">
+        <form
+          className="w-full space-y-4 md:w-[70%]"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div>
-            <Label htmlFor="title">Title</Label>
+            <Label htmlFor="title">
+              Title <span className="text-red-700">*</span>
+            </Label>
             <Input
               {...register("title")}
               type="text"
@@ -137,7 +150,13 @@ const CreateArticlePage = () => {
           </div>
 
           <div>
+            <Label htmlFor="content">
+              Content <span className="text-red-700">*</span>
+            </Label>
+
             <ReactQuill
+              id="content"
+              className={`bg-background ${errors.content && "border border-red-700"}`}
               theme="snow"
               value={editorContent}
               onChange={onEditorChange}
@@ -166,11 +185,32 @@ const CreateArticlePage = () => {
             )}
           </div>
 
+          <div>
+            <Label htmlFor="description">
+              Category <span className="text-red-700">*</span>
+            </Label>
+            <Select>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="politics">politics</SelectItem>
+                <SelectItem value="culture">culture</SelectItem>
+                <SelectItem value="sports">sports</SelectItem>
+              </SelectContent>
+            </Select>
+            {errors.description && (
+              <p className="mt-2 text-sm text-red-700">
+                {errors.description.message}
+              </p>
+            )}
+          </div>
+
           <Button
             type="submit"
             variant="default"
             size="lg"
-            className="flex w-1/2 items-center justify-center gap-2 text-lg"
+            className="flex w-full items-center justify-center gap-2 text-lg md:w-[30%]"
             disabled={isSubmitted}
           >
             {isSubmitted ? (
@@ -183,6 +223,26 @@ const CreateArticlePage = () => {
             )}
           </Button>
         </form>
+
+        <div className="w-full md:w-[30%]">
+          <div className="mb-2 flex h-[200px] items-center justify-center overflow-hidden rounded bg-black/10 text-foreground/15">
+            <Image className="h-10 w-10" />
+          </div>
+          <label
+            htmlFor="thumbnail"
+            className="flex w-full cursor-pointer items-center justify-center rounded bg-primary p-3 font-semibold text-background"
+          >
+            <input
+              type="file"
+              className="hidden"
+              id="thumbnail"
+              name="thumbnail"
+            />
+            <span className="flex items-center justify-center gap-2">
+              <ArrowUpFromLine className="h-5 w-5" /> Upload thumbnail
+            </span>
+          </label>
+        </div>
       </div>
     </div>
   );
