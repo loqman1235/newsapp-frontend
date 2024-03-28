@@ -55,6 +55,8 @@ type CreateCatFormType = z.infer<typeof CreateArticleSchema>;
 
 const CreateArticlePage = () => {
   const [isPublished, setIsPublished] = useState(false);
+  const [thumbnail, setThumbnail] = useState<File>();
+  const [thumbnailPreview, setThumbnailPreview] = useState<string>();
   const navigate = useNavigate();
   const {
     register,
@@ -70,6 +72,15 @@ const CreateArticlePage = () => {
 
   const onEditorChange = (editorState: string) => {
     setValue("content", editorState);
+  };
+
+  const handleUploadThumbnail = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    if (event.target.files) {
+      setThumbnail(event.target.files[0]);
+      setThumbnailPreview(URL.createObjectURL(event.target.files[0]));
+    }
   };
 
   const editorContent = watch("content");
@@ -107,13 +118,15 @@ const CreateArticlePage = () => {
     }
   };
 
+  console.log(thumbnail, "THUMBNAIL");
+
   return (
     <div>
       <h2 className="mb-2 text-2xl font-bold tracking-tight">Create Article</h2>
 
       <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col-reverse items-start gap-10 md:flex-row">
-          <div className="w-full space-y-4 md:w-[70%]">
+          <div className="w-full space-y-4 md:w-[60%]">
             <div>
               <Label htmlFor="title">
                 Title <span className="text-red-700">*</span>
@@ -218,10 +231,20 @@ const CreateArticlePage = () => {
             </div>
           </div>
 
-          <div className="w-full md:w-[30%]">
-            <div className="mb-2 flex h-[200px] items-center justify-center overflow-hidden rounded bg-black/10 text-foreground/15">
-              <Image className="h-10 w-10" />
-            </div>
+          <div className="w-full md:w-[40%]">
+            {thumbnailPreview ? (
+              <div className="mb-2 flex h-[200px] items-center justify-center overflow-hidden rounded bg-black/10 text-foreground/15">
+                <img
+                  src={thumbnailPreview}
+                  alt="thumbnail"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            ) : (
+              <div className="mb-2 flex h-[200px] items-center justify-center overflow-hidden rounded bg-black/10 text-foreground/15">
+                <Image className="h-10 w-10" />
+              </div>
+            )}
             <label
               htmlFor="thumbnail"
               className="flex w-full cursor-pointer items-center justify-center rounded border border-muted-foreground/20 bg-background p-3 font-semibold text-muted-foreground shadow-sm"
@@ -231,6 +254,7 @@ const CreateArticlePage = () => {
                 className="hidden"
                 id="thumbnail"
                 name="thumbnail"
+                onChange={handleUploadThumbnail}
               />
               <span className="flex items-center justify-center gap-2">
                 <ArrowUpFromLine className="h-5 w-5" /> Upload thumbnail
