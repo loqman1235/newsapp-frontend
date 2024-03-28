@@ -13,7 +13,7 @@ import { RootState } from "@/app/store";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { Textarea } from "@/components/ui/textarea";
-import ReactQuill from "react-quill";
+// import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { ArrowUpFromLine, Image } from "lucide-react";
 import { Select, SelectOption } from "@/components/ui/select";
@@ -21,6 +21,14 @@ import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import useFetch from "@/hooks/useFetch";
 import { ICategory } from "@/types";
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
 
 const CreateArticleSchema = z.object({
   title: z
@@ -42,13 +50,28 @@ const CreateArticleSchema = z.object({
     .trim()
     .min(1, { message: "Content is required" })
     .min(5, { message: "Content must be at least 5 characters" }),
-  categories: z
-    .array(z.string())
-    .min(1, { message: "At least one category is required" }),
-  isPublished: z.boolean(),
+  categories: z.array(z.string()).min(1, { message: "Category is required" }),
   thumbnail: z
-    .instanceof(File)
-    .refine((file) => file !== undefined, { message: "Thumbnail is required" }),
+    .any()
+    .refine((files) => files?.[0], "Thumbnail is required")
+    .refine((files) => {
+      return files?.[0]?.size <= MAX_FILE_SIZE;
+    }, `Max image size is 5MB.`)
+    .refine(
+      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      "Only .jpg, .jpeg, .png and .webp formats are supported.",
+    )
+    .transform((files) => {
+      //  Convert into a base64 image
+      const reader = new FileReader();
+      reader.readAsDataURL(files[0]);
+      return new Promise((resolve) => {
+        reader.onload = () => {
+          resolve(reader.result as string);
+        };
+      });
+    }),
+  isPublished: z.boolean(),
 });
 
 type CreateCatFormType = z.infer<typeof CreateArticleSchema>;
@@ -56,7 +79,7 @@ type CreateCatFormType = z.infer<typeof CreateArticleSchema>;
 const CreateArticlePage = () => {
   const { data: categoriesResult } = useFetch("/cats");
   const [isPublished, setIsPublished] = useState(false);
-  const [thumbnail, setThumbnail] = useState<File>();
+  // const [thumbnail, setThumbnail] = useState<File>();
   const [thumbnailPreview, setThumbnailPreview] = useState<string>();
   const navigate = useNavigate();
 
@@ -72,44 +95,16 @@ const CreateArticlePage = () => {
     resolver: zodResolver(CreateArticleSchema),
   });
 
-  const onEditorChange = (editorState: string) => {
-    setValue("content", editorState);
-  };
-
-  const onCategoryChange = (value: string[]) => {
-    setValue("categories", value);
-  };
-
-  const handleUploadThumbnail = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    if (event.target.files) {
-      setThumbnail(event.target.files[0]);
-      setThumbnailPreview(URL.createObjectURL(event.target.files[0]));
-    }
-  };
-
-  const editorContent = watch("content");
-
   const { accessToken } = useSelector<RootState, RootState["auth"]>(
     (state) => state.auth,
   );
 
   const onSubmit: SubmitHandler<CreateCatFormType> = async (data) => {
-    if (!thumbnail) {
-      setError("thumbnail", {
-        type: "custom",
-        message: "Thumbnail is required",
-      });
-      return;
-    }
-
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description || "");
     formData.append("content", data.content);
     formData.append("isPublished", String(data.isPublished));
-    formData.append("thumbnail", thumbnail);
 
     console.log(formData);
     // try {
@@ -172,7 +167,7 @@ const CreateArticlePage = () => {
                 id="description"
                 placeholder="Enter a brief description"
                 rows={2}
-                className={errors.title && "border-red-700"}
+                className={errors.description && "border-red-700"}
               />
               {errors.description && (
                 <p className="mt-2 text-sm text-red-700">
@@ -186,29 +181,13 @@ const CreateArticlePage = () => {
                 Content <span className="text-red-700">*</span>
               </Label>
 
-              <ReactQuill
+              <Textarea
+                {...register("content")}
+                name="content"
                 id="content"
-                className={`bg-background ${errors.content && "border border-red-700"}`}
-                theme="snow"
-                value={editorContent}
-                onChange={onEditorChange}
-                modules={{
-                  toolbar: [
-                    ["bold", "italic", "underline", "strike"],
-                    ["blockquote"],
-                    [{ header: 1 }, { header: 2 }],
-                    [{ list: "ordered" }, { list: "bullet" }],
-                    [{ script: "sub" }, { script: "super" }],
-                    [{ indent: "-1" }, { indent: "+1" }],
-                    [{ direction: "rtl" }],
-                    [{ size: ["small", false, "large", "huge"] }],
-                    [{ color: [] }, { background: [] }],
-                    [{ font: [] }],
-                    [{ align: [] }],
-                    ["clean"],
-                    ["link", "image", "video"],
-                  ],
-                }}
+                placeholder="Enter content"
+                rows={10}
+                className={errors.content && "border-red-700"}
               />
               {errors.content && (
                 <p className="mt-2 text-sm text-red-700">
@@ -221,12 +200,7 @@ const CreateArticlePage = () => {
               <Label htmlFor="cat">
                 Category <span className="text-red-700">*</span>
               </Label>
-              <Select
-                {...register("categories")}
-                name="categories"
-                id="cat"
-                multiple
-              >
+              <Select {...register("categories")} id="cat" multiple>
                 {categoriesResult &&
                   categoriesResult.categories &&
                   categoriesResult.categories.length > 0 &&
@@ -272,17 +246,38 @@ const CreateArticlePage = () => {
               htmlFor="thumbnail"
               className="flex w-full cursor-pointer items-center justify-center rounded border border-muted-foreground/20 bg-background p-3 font-semibold text-muted-foreground shadow-sm"
             >
-              <input
-                type="file"
-                className="hidden"
-                id="thumbnail"
-                name="thumbnail"
-                onChange={handleUploadThumbnail}
-              />
+              <div className="space-y-2">
+                <Input
+                  {...register("thumbnail", {
+                    onChange: (e) => {
+                      const file = e.target.files?.[0];
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        const result = reader.result as string;
+                        URL.revokeObjectURL(result); // Prevent memory leaks
+                        setThumbnailPreview(result);
+                      };
+                      if (file) {
+                        reader.readAsDataURL(file);
+                      }
+                    },
+                  })}
+                  type="file"
+                  id="thumbnail"
+                  name="thumbnail"
+                  className="hidden"
+                />
+              </div>
+
               <span className="flex items-center justify-center gap-2">
                 <ArrowUpFromLine className="h-5 w-5" /> Upload thumbnail
               </span>
             </label>
+            {errors.thumbnail && (
+              <p className="mt-2 text-sm text-red-700">
+                {errors.thumbnail.message}
+              </p>
+            )}
           </div>
         </div>
         <Button
