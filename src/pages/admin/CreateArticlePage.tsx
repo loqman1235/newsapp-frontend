@@ -16,15 +16,11 @@ import { Textarea } from "@/components/ui/textarea";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { ArrowUpFromLine, Image } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectOption } from "@/components/ui/select";
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
+import useFetch from "@/hooks/useFetch";
+import { ICategory } from "@/types";
 
 const CreateArticleSchema = z.object({
   title: z
@@ -49,15 +45,21 @@ const CreateArticleSchema = z.object({
   categories: z
     .array(z.string())
     .min(1, { message: "At least one category is required" }),
+  isPublished: z.boolean(),
+  thumbnail: z
+    .instanceof(File)
+    .refine((file) => file !== undefined, { message: "Thumbnail is required" }),
 });
 
 type CreateCatFormType = z.infer<typeof CreateArticleSchema>;
 
 const CreateArticlePage = () => {
+  const { data: categoriesResult } = useFetch("/cats");
   const [isPublished, setIsPublished] = useState(false);
   const [thumbnail, setThumbnail] = useState<File>();
   const [thumbnailPreview, setThumbnailPreview] = useState<string>();
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -72,6 +74,10 @@ const CreateArticlePage = () => {
 
   const onEditorChange = (editorState: string) => {
     setValue("content", editorState);
+  };
+
+  const onCategoryChange = (value: string[]) => {
+    setValue("categories", value);
   };
 
   const handleUploadThumbnail = (
@@ -90,35 +96,47 @@ const CreateArticlePage = () => {
   );
 
   const onSubmit: SubmitHandler<CreateCatFormType> = async (data) => {
-    console.log(typeof data.title);
-    return;
-    try {
-      const res = await api.post("/cats", data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
+    if (!thumbnail) {
+      setError("thumbnail", {
+        type: "custom",
+        message: "Thumbnail is required",
       });
-      if (res.status === 201) {
-        console.log(res);
-        reset();
-        navigate("/dashboard/categories");
-      }
-      console.log(res);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error.response?.data?.details[0]?.message);
-        setError("name", {
-          type: "custom",
-          message: error.response?.data?.details[0]?.message,
-        });
-      }
-
-      console.log(error);
+      return;
     }
-  };
 
-  console.log(thumbnail, "THUMBNAIL");
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description || "");
+    formData.append("content", data.content);
+    formData.append("isPublished", String(data.isPublished));
+    formData.append("thumbnail", thumbnail);
+
+    console.log(formData);
+    // try {
+    //   const res = await api.post("/cats", data, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${accessToken}`,
+    //     },
+    //   });
+    //   if (res.status === 201) {
+    //     console.log(res);
+    //     reset();
+    //     navigate("/dashboard/categories");
+    //   }
+    //   console.log(res);
+    // } catch (error) {
+    //   if (error instanceof AxiosError) {
+    //     console.log(error.response?.data?.details[0]?.message);
+    //     setError("name", {
+    //       type: "custom",
+    //       message: error.response?.data?.details[0]?.message,
+    //     });
+    //   }
+
+    //   console.log(error);
+    // }
+  };
 
   return (
     <div>
@@ -203,19 +221,24 @@ const CreateArticlePage = () => {
               <Label htmlFor="cat">
                 Category <span className="text-red-700">*</span>
               </Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent id="cat">
-                  <SelectItem value="politics">politics</SelectItem>
-                  <SelectItem value="culture">culture</SelectItem>
-                  <SelectItem value="sports">sports</SelectItem>
-                </SelectContent>
+              <Select
+                {...register("categories")}
+                name="categories"
+                id="cat"
+                multiple
+              >
+                {categoriesResult &&
+                  categoriesResult.categories &&
+                  categoriesResult.categories.length > 0 &&
+                  categoriesResult.categories.map((cat: ICategory) => (
+                    <SelectOption key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </SelectOption>
+                  ))}
               </Select>
-              {errors.description && (
+              {errors.categories && (
                 <p className="mt-2 text-sm text-red-700">
-                  {errors.description.message}
+                  {errors.categories.message}
                 </p>
               )}
             </div>
