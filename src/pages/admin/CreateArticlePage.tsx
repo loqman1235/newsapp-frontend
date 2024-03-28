@@ -23,6 +23,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useState } from "react";
+import { Switch } from "@/components/ui/switch";
 
 const CreateArticleSchema = z.object({
   title: z
@@ -52,6 +54,7 @@ const CreateArticleSchema = z.object({
 type CreateCatFormType = z.infer<typeof CreateArticleSchema>;
 
 const CreateArticlePage = () => {
+  const [isPublished, setIsPublished] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -108,7 +111,7 @@ const CreateArticlePage = () => {
     <div>
       <h2 className="mb-2 text-2xl font-bold tracking-tight">Create Article</h2>
 
-      <div className="flex flex-col-reverse items-start gap-5 md:flex-row">
+      <div className="flex flex-col-reverse items-start gap-10 md:flex-row">
         <form
           className="w-full space-y-4 md:w-[70%]"
           onSubmit={handleSubmit(onSubmit)}
@@ -186,14 +189,14 @@ const CreateArticlePage = () => {
           </div>
 
           <div>
-            <Label htmlFor="description">
+            <Label htmlFor="cat">
               Category <span className="text-red-700">*</span>
             </Label>
             <Select>
               <SelectTrigger>
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent id="cat">
                 <SelectItem value="politics">politics</SelectItem>
                 <SelectItem value="culture">culture</SelectItem>
                 <SelectItem value="sports">sports</SelectItem>
@@ -204,6 +207,16 @@ const CreateArticlePage = () => {
                 {errors.description.message}
               </p>
             )}
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="published"
+              name="published"
+              onCheckedChange={() => setIsPublished(!isPublished)}
+              checked={isPublished}
+            />
+            <Label htmlFor="published">Public</Label>
           </div>
 
           <Button
@@ -230,7 +243,7 @@ const CreateArticlePage = () => {
           </div>
           <label
             htmlFor="thumbnail"
-            className="flex w-full cursor-pointer items-center justify-center rounded bg-primary p-3 font-semibold text-background"
+            className="flex w-full cursor-pointer items-center justify-center rounded border border-muted-foreground/20 bg-background p-3 font-semibold text-muted-foreground shadow-sm"
           >
             <input
               type="file"
