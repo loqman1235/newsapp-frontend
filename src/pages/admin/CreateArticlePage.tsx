@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { z } from "zod";
 import api from "@/services/api";
-import { AxiosError } from "axios";
+// import { AxiosError } from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { useNavigate } from "react-router-dom";
@@ -74,12 +74,11 @@ const CreateArticleSchema = z.object({
   isPublished: z.boolean(),
 });
 
-type CreateCatFormType = z.infer<typeof CreateArticleSchema>;
+type CreateArticleFormType = z.infer<typeof CreateArticleSchema>;
 
 const CreateArticlePage = () => {
   const { data: categoriesResult } = useFetch("/cats");
   const [isPublished, setIsPublished] = useState(false);
-  // const [thumbnail, setThumbnail] = useState<File>();
   const [thumbnailPreview, setThumbnailPreview] = useState<string>();
   const navigate = useNavigate();
 
@@ -87,11 +86,8 @@ const CreateArticlePage = () => {
     register,
     handleSubmit,
     reset,
-    setError,
-    setValue,
-    watch,
     formState: { errors, isSubmitted },
-  } = useForm<CreateCatFormType>({
+  } = useForm<CreateArticleFormType>({
     resolver: zodResolver(CreateArticleSchema),
   });
 
@@ -99,38 +95,35 @@ const CreateArticlePage = () => {
     (state) => state.auth,
   );
 
-  const onSubmit: SubmitHandler<CreateCatFormType> = async (data) => {
+  const onSubmit: SubmitHandler<CreateArticleFormType> = async (data) => {
+    console.log("SUBMIT");
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description || "");
     formData.append("content", data.content);
     formData.append("isPublished", String(data.isPublished));
+    formData.append("thumbnail", (data.thumbnail as string[])[0]);
 
-    console.log(formData);
-    // try {
-    //   const res = await api.post("/cats", data, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: `Bearer ${accessToken}`,
-    //     },
-    //   });
-    //   if (res.status === 201) {
-    //     console.log(res);
-    //     reset();
-    //     navigate("/dashboard/categories");
-    //   }
-    //   console.log(res);
-    // } catch (error) {
-    //   if (error instanceof AxiosError) {
-    //     console.log(error.response?.data?.details[0]?.message);
-    //     setError("name", {
-    //       type: "custom",
-    //       message: error.response?.data?.details[0]?.message,
-    //     });
-    //   }
+    for (let i = 0; i < data.categories.length; i++) {
+      formData.append("categories", data.categories[i]);
+    }
 
-    //   console.log(error);
-    // }
+    try {
+      const res = await api.post("/posts", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (res.status === 201) {
+        console.log(res);
+        reset();
+        navigate("/dashboard/articles");
+      }
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
