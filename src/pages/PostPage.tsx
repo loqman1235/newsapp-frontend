@@ -3,6 +3,10 @@ import useFetch from "@/hooks/useFetch";
 import api from "@/services/api";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.core.css";
+import "react-quill/dist/quill.bubble.css";
 
 const PostPage = () => {
   const { postSlug } = useParams();
@@ -38,7 +42,8 @@ const PostPage = () => {
             className="h-full w-full object-cover"
           />
         </div>
-        <p className="text-muted-foreground">{post?.content}</p>
+        {/* <p className="text-muted-foreground">{post?.content}</p> */}
+        <ReactQuill value={post?.content} readOnly={true} theme={"bubble"} />
       </div>
     );
   }

@@ -19,6 +19,10 @@ import api from "@/services/api";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.core.css";
+import "react-quill/dist/quill.bubble.css";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPES = [
@@ -63,6 +67,26 @@ const CreateArticleSchema = z.object({
 type CreateArticleFormType = z.infer<typeof CreateArticleSchema>;
 
 const CreateArticleForm = () => {
+  const toolbarOptions = [
+    ["bold", "italic", "underline", "strike"], // toggled buttons
+    ["blockquote", "code-block"],
+    ["link", "image", "video", "formula"],
+
+    [{ header: 1 }, { header: 2 }], // custom button values
+    [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+    [{ script: "sub" }, { script: "super" }], // superscript/subscript
+    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+    [{ direction: "rtl" }], // text direction
+
+    [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    [{ font: [] }],
+    [{ align: [] }],
+
+    ["clean"], // remove formatting button
+  ];
   const { data: categoriesResult } = useFetch("/cats");
   const [thumbnailPreview, setThumbnailPreview] = useState<string>();
   const navigate = useNavigate();
@@ -114,7 +138,7 @@ const CreateArticleForm = () => {
   return (
     <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col-reverse items-start gap-10 md:flex-row">
-        <div className="w-full space-y-4 md:w-[60%]">
+        <div className="w-full space-y-4 md:w-[70%]">
           <div>
             <Label htmlFor="title">
               Title <span className="text-red-700">*</span>
@@ -155,14 +179,23 @@ const CreateArticleForm = () => {
             <Label htmlFor="content">
               Content <span className="text-red-700">*</span>
             </Label>
-
-            <Textarea
-              {...register("content")}
+            <Controller
               name="content"
-              id="content"
-              placeholder="Enter content"
-              rows={10}
-              className={errors.content && "border-red-700"}
+              control={control}
+              render={({ field }) => (
+                <ReactQuill
+                  className={`w-full bg-background ${
+                    errors.content && "border border-red-700"
+                  }`}
+                  modules={{
+                    toolbar: toolbarOptions,
+                  }}
+                  {...field}
+                  onChange={(text) => {
+                    field.onChange(text);
+                  }}
+                />
+              )}
             />
             {errors.content && (
               <p className="mt-2 text-sm text-red-700">
@@ -217,7 +250,7 @@ const CreateArticleForm = () => {
         </div>
 
         {/* THUMBNAIL PREVIEW and UPLOAD */}
-        <div className="w-full md:w-[40%]">
+        <div className="w-full md:w-[30%]">
           {thumbnailPreview ? (
             <div className="mb-2 flex h-[200px] items-center justify-center overflow-hidden rounded bg-black/10 text-foreground/15">
               <img

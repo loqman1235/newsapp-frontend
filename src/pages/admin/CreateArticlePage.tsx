@@ -1,6 +1,5 @@
 // import { AxiosError } from "axios";
 // import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import CreateArticleForm from "@/components/admin/CreateArticleForm";
 
 const CreateArticlePage = () => {
