@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Badge } from "../ui/badge";
 
 interface IArticle extends IPost {
-  isPublished?: boolean;
+  published?: boolean;
 }
 
 const Article = ({
@@ -13,7 +13,7 @@ const Article = ({
   title,
   thumbnail,
   categories,
-  isPublished,
+  published,
 }: IArticle) => {
   return (
     <div className="w-full bg-background shadow">
@@ -40,8 +40,8 @@ const Article = ({
           {shortenText(title)}
         </h2>
 
-        <Badge variant={isPublished ? "default" : "secondary"} className="my-4">
-          {isPublished ? "Public" : "Draft"}
+        <Badge variant={published ? "default" : "secondary"} className="my-4">
+          {published ? "Public" : "Draft"}
         </Badge>
 
         {/* CTAS */}
