@@ -24,15 +24,16 @@ import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.core.css";
 import "react-quill/dist/quill.bubble.css";
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
+// const MAX_FILE_SIZE = 5 * 1024 * 1024;
+// const ACCEPTED_IMAGE_TYPES = [
+//   "image/jpeg",
+//   "image/jpg",
+//   "image/png",
+//   "image/webp",
+// ];
 
 const EditArticleSchema = z.object({
+  id: z.string(),
   title: z
     .string()
     .trim()
@@ -41,30 +42,22 @@ const EditArticleSchema = z.object({
   description: z
     .string()
     .trim()
-    .min(5, { message: "Description must be at least 10 characters" })
-    .optional(),
+    .optional()
+    .nullable()
+    .refine((desc) => !desc || desc.length >= 10, {
+      message: "Description must be at least 10 characters",
+    }),
   content: z
     .string()
     .trim()
     .min(1, { message: "Content is required" })
     .min(5, { message: "Content must be at least 5 characters" }),
   published: z.coerce.boolean().default(false),
-  thumbnail: z
-    .any()
-    .refine((files) => files?.[0], { message: "Thumbnail is required" })
-    .refine(
-      (files) => {
-        return files?.[0]?.size <= MAX_FILE_SIZE;
-      },
-      { message: "Max image size is 5MB." },
-    )
-    .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), {
-      message: "Only .jpeg, .jpg, .png and .webp files are allowed",
-    }),
+  thumbnail: z.any().optional().nullable(),
   categories: z.array(z.string()).min(1, { message: "Category is required" }),
 });
 
-type CreateArticleFormType = z.infer<typeof EditArticleSchema>;
+type UpdateArticleFormType = z.infer<typeof EditArticleSchema>;
 
 const EditArticleForm = () => {
   const { artSlug } = useParams();
@@ -99,7 +92,7 @@ const EditArticleForm = () => {
     reset,
     control,
     formState: { errors, isSubmitting },
-  } = useForm<CreateArticleFormType>({
+  } = useForm<UpdateArticleFormType>({
     resolver: zodResolver(EditArticleSchema),
   });
 
@@ -107,30 +100,34 @@ const EditArticleForm = () => {
     (state) => state.auth,
   );
 
-  const onSubmit: SubmitHandler<CreateArticleFormType> = async (data) => {
+  const onSubmit: SubmitHandler<UpdateArticleFormType> = async (data) => {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description || "");
     formData.append("content", data.content);
     formData.append("published", data.published.toString());
-    formData.append("thumbnail", (data.thumbnail as Blob[])[0]);
+
+    // Only append thumbnail if it exists and is a file
+    if (data.thumbnail && data.thumbnail.length > 0) {
+      formData.append("thumbnail", (data.thumbnail as Blob[])[0]);
+    }
 
     data.categories.forEach((category, index) => {
       formData.append(`categories[${index}]`, category);
     });
 
     try {
-      const res = await api.post("/posts", formData, {
+      const res = await api.patch(`/posts/${data.id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${accessToken}`,
         },
       });
 
-      if (res.status === 201) {
+      if (res.status === 200) {
         reset();
         navigate("/dashboard/articles");
-        toast.success("Article created successfully");
+        toast.success("Article updated successfully");
       }
     } catch (error) {
       console.log(error);
@@ -141,6 +138,7 @@ const EditArticleForm = () => {
     if (artResult && artResult.post) {
       setThumbnailPreview(artResult.post.thumbnail.url);
       reset({
+        id: artResult.post.id,
         title: artResult.post.title,
         description: artResult.post.description,
         content: artResult.post.content,
@@ -154,6 +152,7 @@ const EditArticleForm = () => {
 
   return (
     <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+      <input type="hidden" {...register("id")} />
       <div className="flex flex-col-reverse items-start gap-10 md:flex-row">
         <div className="w-full space-y-4 md:w-[70%]">
           <div>
