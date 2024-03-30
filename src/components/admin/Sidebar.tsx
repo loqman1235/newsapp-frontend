@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import NavigationMenu from "./NavigationMenu";
-import { Crown } from "lucide-react";
+import { Shield } from "lucide-react";
 
 const Sidebar = () => {
   return (
@@ -12,7 +12,7 @@ const Sidebar = () => {
           className="flex items-center gap-5 text-xl font-bold tracking-tight text-background"
         >
           <span className="block md:hidden">
-            <Crown />
+            <Shield />
           </span>
           <span className="hidden md:block">NewsApp.</span>
         </Link>

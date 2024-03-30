@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, SquarePen, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { ICategory } from "@/types";
@@ -106,7 +106,7 @@ const CategoriesPage = () => {
             className="flex items-center justify-center bg-foreground p-2 text-background"
             to={`/dashboard/categories/edit/${props.node.data.slug}`}
           >
-            <Pencil className="h-4 w-4" />
+            <SquarePen className="h-4 w-4" />
           </Link>
 
           <AlertDialog>
@@ -163,7 +163,13 @@ const CategoriesPage = () => {
       <div className="mb-2 flex items-center justify-between">
         <h2 className=" text-2xl font-bold tracking-tight">Categories</h2>
         <Button variant="default">
-          <Link to="/dashboard/categories/create">Create</Link>
+          <Link
+            to="/dashboard/categories/create"
+            className="flex items-center gap-2"
+          >
+            {" "}
+            <Pencil className="h-4 w-4" /> Create
+          </Link>
         </Button>
       </div>
       <div className="ag-theme-material">

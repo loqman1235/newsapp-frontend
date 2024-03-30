@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+import { Switch } from "@/components/ui/switch";
 
 const CreateCatSchema = z.object({
   name: z
@@ -20,6 +21,7 @@ const CreateCatSchema = z.object({
     .min(1, { message: "Name is required" })
     .min(3, { message: "Name must be at least 3 characters" })
     .max(30, { message: "Name must be less than 30 characters" }),
+  published: z.coerce.boolean().default(false),
 });
 
 type CreateCatFormType = z.infer<typeof CreateCatSchema>;
@@ -31,6 +33,7 @@ const CreateCatPage = () => {
     handleSubmit,
     reset,
     setError,
+    control,
     formState: { errors, isSubmitted },
   } = useForm<CreateCatFormType>({
     resolver: zodResolver(CreateCatSchema),
@@ -41,7 +44,6 @@ const CreateCatPage = () => {
   );
 
   const onSubmit: SubmitHandler<CreateCatFormType> = async (data) => {
-    console.log(typeof data.name);
     try {
       const res = await api.post("/cats", data, {
         headers: {
@@ -89,6 +91,24 @@ const CreateCatPage = () => {
             {errors.name && (
               <p className="mt-2 text-sm text-red-700">{errors.name.message}</p>
             )}
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Controller
+              name="published"
+              control={control}
+              defaultValue={false}
+              render={({ field }) => (
+                <Switch
+                  id="published"
+                  {...field}
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  value={field.value.toString()}
+                />
+              )}
+            />
+            <Label htmlFor="published">Public</Label>
           </div>
 
           <Button

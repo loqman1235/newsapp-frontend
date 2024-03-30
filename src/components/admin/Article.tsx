@@ -1,6 +1,6 @@
 import { shortenText } from "@/lib/utils";
 import { IPost } from "@/types";
-import { Pencil, Trash2 } from "lucide-react";
+import { SquarePen, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Badge } from "../ui/badge";
 import {
@@ -64,7 +64,7 @@ const Article = ({
             className="flex items-center justify-center bg-foreground p-2 text-background"
             to={`/dashboard/articles/edit/${slug}`}
           >
-            <Pencil className="h-4 w-4" />
+            <SquarePen className="h-4 w-4" />
           </Link>
           <AlertDialog>
             <AlertDialogTrigger asChild>
