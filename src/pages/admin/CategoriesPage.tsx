@@ -160,9 +160,9 @@ const CategoriesPage = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <h2 className="mb-2 text-2xl font-bold tracking-tight">Categories</h2>
-        <Button variant="default" size={"sm"} className="md:hidden">
+      <div className="mb-2 flex items-center justify-between">
+        <h2 className=" text-2xl font-bold tracking-tight">Categories</h2>
+        <Button variant="default">
           <Link to="/dashboard/categories/create">Create</Link>
         </Button>
       </div>

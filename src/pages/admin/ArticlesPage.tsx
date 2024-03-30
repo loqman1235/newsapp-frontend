@@ -8,6 +8,8 @@ import { RootState } from "@/app/store";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const ArticlesPage = () => {
   const { accessToken } = useSelector<RootState, RootState["auth"]>(
@@ -58,7 +60,12 @@ const ArticlesPage = () => {
 
   return (
     <div>
-      <h2 className="mb-2 text-2xl font-bold tracking-tight">Articles</h2>
+      <div className="mb-2 flex items-center justify-between">
+        <h2 className=" text-2xl font-bold tracking-tight">Articles</h2>
+        <Button variant="default">
+          <Link to="/dashboard/articles/create">Create</Link>
+        </Button>
+      </div>
       <div className="mb-10 grid w-full grid-cols-1 gap-5 md:grid-cols-3">
         {articles.map((article: IPost) => (
           <Article key={article.id} {...article} handleDelete={handleDelete} />
