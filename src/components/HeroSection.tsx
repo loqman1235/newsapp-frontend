@@ -22,7 +22,7 @@ const HeroSection = () => {
             key={item.id}
             {...item}
             fontSize={`text-xl ${start === 0 && "md:text-3xl"}`}
-            url={`${item.categories[0].slug}/${item.slug}`}
+            url={`category/${item.categories[0].slug}/${item.slug}`}
           />
         ))
     );

@@ -7,6 +7,8 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.core.css";
 import "react-quill/dist/quill.bubble.css";
+import { format } from "date-fns";
+import { Calendar, Pencil } from "lucide-react";
 
 const PostPage = () => {
   const { postSlug } = useParams();
@@ -31,11 +33,19 @@ const PostPage = () => {
   } else {
     return (
       <div className="container my-10 max-w-4xl text-start">
-        <h1 className="mb-5  font-mono text-2xl font-bold">{post?.title}</h1>
-        <div className="mb-5 text-sm text-muted-foreground">
-          3 March 2024, John Doe
+        <h1 className="mb-2  font-mono text-2xl font-bold">{post?.title}</h1>
+        <div className="mb-5 flex items-center gap-3 text-sm text-muted-foreground">
+          <span className="flex items-center gap-1">
+            {" "}
+            <Calendar className="h-3.5 w-3.5" />{" "}
+            {format(new Date(post?.createdAt), "dd MMM yyyy")}
+          </span>
+          <div className="h-0.5 w-0.5 rounded-full bg-muted-foreground"></div>
+          <span className="flex items-center gap-1">
+            <Pencil className="h-3.5 w-3.5" /> {post?.author?.name}
+          </span>
         </div>
-        <div className="mb-5 h-[354px] w-full">
+        <div className="mb-5 h-[354px] w-full overflow-hidden">
           <img
             src={post?.thumbnail?.url}
             alt={post?.title}

@@ -76,6 +76,7 @@
 
 .ql-editor {
   min-height: 300px;
+  padding: 0;
 }
 
 @layer base {

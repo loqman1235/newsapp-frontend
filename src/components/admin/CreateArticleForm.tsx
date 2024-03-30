@@ -184,7 +184,8 @@ const CreateArticleForm = () => {
               control={control}
               render={({ field }) => (
                 <ReactQuill
-                  className={`w-full bg-background ${
+                  theme="snow"
+                  className={`w-full bg-background p-5 ${
                     errors.content && "border border-red-700"
                   }`}
                   modules={{
