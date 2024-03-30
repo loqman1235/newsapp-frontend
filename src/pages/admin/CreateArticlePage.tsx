@@ -1,5 +1,3 @@
-// import { AxiosError } from "axios";
-// import ReactQuill from "react-quill";
 import CreateArticleForm from "@/components/admin/CreateArticleForm";
 
 const CreateArticlePage = () => {
