@@ -30,6 +30,7 @@ import {
   DashboardCreateCatPage,
   DashboardEditCatPage,
   DashboardEditArticle,
+  DashboardSettingsPage,
 } from "@/pages";
 
 const App = () => {
@@ -98,6 +99,8 @@ const App = () => {
           path="articles/edit/:artSlug"
           element={<DashboardEditArticle />}
         />
+
+        <Route path="settings" element={<DashboardSettingsPage />} />
       </Route>
 
       {/* NOT FOUND */}

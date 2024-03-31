@@ -84,7 +84,7 @@ const NavigationMenu = () => {
       </li>
 
       <li>
-        <Link to="/dashboard" className={navLinkStyles}>
+        <Link to="/dashboard/settings" className={navLinkStyles}>
           {" "}
           <span>
             <Settings className="h-5 w-5" />

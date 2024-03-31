@@ -87,7 +87,7 @@ const EditCatForm = () => {
     }
   };
   return (
-    <form className=" space-y-4" onSubmit={handleSubmit(onSubmit)}>
+    <form className="w-1/2 space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <div>
         <Label htmlFor="name">Name</Label>
         <Input

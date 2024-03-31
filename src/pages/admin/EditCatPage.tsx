@@ -5,9 +5,7 @@ const EditCatPage = () => {
     <div>
       <h2 className="mb-2 text-2xl font-bold tracking-tight">Edit Category</h2>
 
-      <div className="w-1/2 bg-background p-5 shadow">
-        <EditCatForm />
-      </div>
+      <EditCatForm />
     </div>
   );
 };

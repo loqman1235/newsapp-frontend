@@ -12,3 +12,4 @@ export { default as DashboardCategoriesPage } from "./admin/CategoriesPage";
 export { default as DashboardCreateCatPage } from "./admin/CreateCatPage";
 export { default as DashboardEditCatPage } from "./admin/EditCatPage";
 export { default as DashboardEditArticle } from "./admin/EditArticlePage";
+export { default as DashboardSettingsPage } from "./admin/SettingsPage";
